@@ -1,0 +1,24 @@
+{
+    "timeZone": "America/New_York",
+    "exceptionLogging": "STACKDRIVER",
+    "runtimeVersion": "V8",
+    "oauthScopes": [
+      "https://www.googleapis.com/auth/spreadsheets",
+      "https://www.googleapis.com/auth/script.external_request",
+      "https://www.googleapis.com/auth/script.container.ui"
+    ],
+    "addOns": {
+      "common": {
+        "name": "ScrapeVine",
+        "logoUrl": "https://cdn.discordapp.com/attachments/540510465290141697/1196456344857882746/image.png?ex=65b7b1cd&is=65a53ccd&hm=200e864eee42598feb2198adb7780ed75ca3a34f464cdc974b16092b8eda200e&",
+        "homepageTrigger": {
+          "runFunction": "onOpen",
+          "enabled": false
+        }
+      },
+      "sheets": {}
+    },
+    "urlFetchWhitelist": [
+      "https://www.example.com/myendpoint/"
+    ]
+  }
