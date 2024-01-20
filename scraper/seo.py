@@ -41,7 +41,7 @@ def google_image_search(query, site, api_key, cse_id, total_results=80):
     return webpage_urls
 
 # Example usage
-api_key = os.getenv('PSE_API')
+api_key = os.getenv('PSE_API') 
 cse_id = os.getenv('PSE_ID')
 tags = ['blue', 'shoes', 'leather']
 site = 'charleskeith.com/sg'  # Specify the site for the search
