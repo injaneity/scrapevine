@@ -10,7 +10,7 @@ service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service, options=options)
 
 # Open the webpage
-url = 'insert url here'
+url = 'https://www.lovebonito.com/sg/mira-knit-midi-dress.html'
 driver.get(url)
 
 # Set the window size to capture the entire page
