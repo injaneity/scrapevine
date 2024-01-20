@@ -13,8 +13,7 @@ def scrape(url):
         return("Failed to retrieve the website")
     
     soup = BeautifulSoup(response.content, 'html.parser')
-    clean = soup.body.get_text(strip=True).replace("\n", "").replace("Gaming", "")
-    #print(clean)
+    clean = soup.body.get_text(strip=True).replace("\n", "")
     print("--------------")
     
     pattern = r'[a-zA-Z]{15,}|\d{15,}|[^\w\s]{15,}|[<>?!]'
