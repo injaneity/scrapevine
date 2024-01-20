@@ -1,8 +1,6 @@
 import base64
 from openai import OpenAI
 import os
-from dotenv import load_dotenv
-load_dotenv()
 
 def encode_image(image_path):
     with open(image_path, "rb") as image_file:
