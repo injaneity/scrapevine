@@ -6,6 +6,8 @@ import os
 # Initialize a Chrome session
 options = webdriver.ChromeOptions()
 options.headless = True  # Run in headless mode, no UI is displayed
+options.add_argument("--start-maximized")  # Start maximized to get the largest possible window size
+options.add_argument("--hide-scrollbars")  # Hide scrollbars to avoid them appearing in screenshots
 service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service, options=options)
 
