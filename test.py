@@ -7,6 +7,6 @@ logging.basicConfig(
     level=logging.INFO
 )
 
-get_image('https://www.nike.com/sg/t/air-jordan-1-low-shoes-6Q1tFM/553558-161')
+get_image('https://www.lovebonito.com/sg/mira-knit-midi-dress.html')
 
 print(summarize_image(encode_image('webpage_screenshot.png')))
