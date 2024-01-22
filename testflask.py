@@ -2,8 +2,6 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-def send_data():
-
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
     # Get JSON data sent from the frontend
