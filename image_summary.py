@@ -6,7 +6,7 @@ def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
-client = OpenAI(api_key=os.getenv('GPT_API'))
+client = OpenAI(api_key='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')
 
 def summarize_image(encoded_image):
     summary = client.chat.completions.create(
@@ -15,7 +15,9 @@ def summarize_image(encoded_image):
         {
         "role": "user",
         "content": [
-            {"type": "text", "text": "Output only the color and type of clothing product (with short details) and its price (converted to Singaporean dollars and including decimals), in the format: 'insert colour and type', 'insert S$'price''"},
+            {"type": "text", "text": 
+            """Your role is to analyse screenshots of clothing products in online stores. Output the type of clothing (with short details), its colour, and its price (including decimals).
+            Output in this format: ("type": "insert type", "colour": "insert colour", "price": "insert price"}"""},
             {
             "type": "image_url",
             "image_url": {
@@ -25,6 +27,7 @@ def summarize_image(encoded_image):
         ],
         }
     ],
+    max_tokens = 100,
     temperature = 0,
     top_p = 0,
     )

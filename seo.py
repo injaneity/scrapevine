@@ -1,28 +1,27 @@
 import requests
 
 import os
-from dotenv import load_dotenv
-load_dotenv()
+
 
 import time
 start = time.time()
 
-def google_image_search(query, site, api_key, cse_id, total_results=80):
+def product_search(query, site, api_key, cse_id):
     
     search_url = "https://www.googleapis.com/customsearch/v1"
     webpage_urls = []
-    for start_index in range(1, total_results, 10):
+    for start_index in range(1, 2):
         params = {
             'q': f"{query} site:{site}",
             'cx': cse_id,
             'searchType': 'image',
             'key': api_key,
             'start': start_index,
-            'num': 10
+            'num': 1
         }
         response = requests.get(search_url, params=params)
         result = ""
-        if response.status_code == 403:
+        if response.status_code == 200:
             result = response.json()
         else:
             if response.status_code == 429:
@@ -41,11 +40,11 @@ def google_image_search(query, site, api_key, cse_id, total_results=80):
     return webpage_urls
 
 # Example usage
-api_key = os.getenv('PSE_API') 
-cse_id = os.getenv('PSE_ID')
+api_key = 'AIzaSyC8JhE_upi0lFOpDmN5xTdna5Dzh_RBH5I'
+cse_id = 'b4d45415c77044fae'
 tags = ['blue', 'shoes', 'leather']
 site = 'charleskeith.com/sg'  # Specify the site for the search
-webpage_results = google_image_search(tags, site, api_key, cse_id)
+webpage_results = product_search(tags, site, api_key, cse_id)
 
 for url in webpage_results:
     print(url)
@@ -53,5 +52,4 @@ for url in webpage_results:
 print(len(webpage_results))
     
 print("--- %s seconds ---\n" % (time.time() - start))
-
 
