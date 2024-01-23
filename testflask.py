@@ -19,30 +19,33 @@ def receive_data():
 
     url = data['siteUrl']
     tags = data['tags']
-    input_product_list = product_search(tags, url, api_key, pse_id)
+    data_requirements = data['dataRequirements']
+
+    # input_product_list = product_search(tags, url, api_key, pse_id)
+    input_product_list = ['https://www.lovebonito.com/sg/mira-knit-midi-dress.html', 'https://www.pazzion.com/collections/shoes-flats/products/elaia-point-toe-ballerina-flats?variant=42287420899571']
 
     output_product_list = []
 
     for link in input_product_list:
         get_image(link)
-        product_info = summarize_image(encode_image('webpage_screenshot.png'))
-        product_dict = json.loads(product_info)
-        product_dict[url] = link
+        product_info = summarize_image(encode_image('webpage_screenshot.png'), data_requirements)
+        product_dict = json.loads((product_info.replace("'", '"')))
+        product_dict["url"] = link
         output_product_list.append(product_dict)
 
-    sample_data = [
-        {"headers": ["name", "colour", "price", "url"]},
-        {"name": "Sport Running Shoes", "colour": "White", "price": "$89", "url": "https://example.com/product/sport-running-shoes"},
-        {"name": "Smartphone X200", "colour": "Black", "price": "$299", "url": "https://example.com/product/smartphone-x200"},
-        {"name": "Bluetooth Headphones E7", "colour": "Red", "price": "$79", "url": "https://example.com/product/bluetooth-headphones-e7"},
-        {"name": "Leather Wallet Classic", "colour": "Brown", "price": "$35", "url": "https://example.com/product/leather-wallet-classic"},
-        {"name": "Summer Dress Floral", "colour": "Blue", "price": "$49", "url": "https://example.com/product/summer-dress-floral"}
-    ]
+    header_dict = {}
+    data_requirements.append("url")
+    headers = data_requirements
+    header_dict["headers"] = headers
+    header_dict["c"] = "c"
+    header_dict["b"] = "b"
+    header_dict["a"] = "a"
+    output_product_list.insert(0, header_dict)
 
-    # Respond back to the frontend with the sample JSON data
-    return jsonify(output_product_list)
+    print(output_product_list)
 
-
+    # Respond back to the frontend
+    return output_product_list
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -6,9 +6,14 @@ def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
-client = OpenAI(api_key='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')
+client = OpenAI(api_key='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')
 
-def summarize_image(encoded_image):
+def summarize_image(encoded_image, data_requirements):
+
+    requirements_dict = {}
+    for requirement in  data_requirements:
+        requirements_dict[requirement] = f"insert {requirement}"
+
     summary = client.chat.completions.create(
     model = "gpt-4-vision-preview",
     messages=[
@@ -16,8 +21,9 @@ def summarize_image(encoded_image):
         "role": "user",
         "content": [
             {"type": "text", "text": 
-            """Your role is to analyse screenshots of clothing products in online stores. Output the type of clothing (with short details), its colour, and its price (including decimals).
-            Output in this format: ("type": "insert type", "colour": "insert colour", "price": "insert price"}"""},
+            f"""Your role is to analyse screenshots of clothing products in online stores, 
+            and output the necessary characteristics to fill up the following format: {requirements_dict}. 
+            For price, output only the numeric value."""},
             {
             "type": "image_url",
             "image_url": {
