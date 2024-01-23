@@ -21,8 +21,8 @@ def receive_data():
     tags = data['tags']
     data_requirements = data['dataRequirements']
 
-    # input_product_list = product_search(tags, url, api_key, pse_id)
-    input_product_list = ['https://www.lovebonito.com/sg/mira-knit-midi-dress.html', 'https://www.pazzion.com/collections/shoes-flats/products/elaia-point-toe-ballerina-flats?variant=42287420899571']
+    input_product_list = product_search(tags, url, api_key, pse_id)
+    #input_product_list = ['https://www.lovebonito.com/sg/mira-knit-midi-dress.html', 'https://www.pazzion.com/collections/shoes-flats/products/elaia-point-toe-ballerina-flats?variant=42287420899571']
 
     output_product_list = []
 

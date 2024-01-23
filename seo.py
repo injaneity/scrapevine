@@ -39,6 +39,7 @@ def product_search(query, site, api_key, cse_id):
 
     return webpage_urls
 
+'''
 # Example usage
 api_key = 'AIzaSyC8JhE_upi0lFOpDmN5xTdna5Dzh_RBH5I'
 cse_id = 'b4d45415c77044fae'
@@ -52,4 +53,4 @@ for url in webpage_results:
 print(len(webpage_results))
     
 print("--- %s seconds ---\n" % (time.time() - start))
-
+'''
