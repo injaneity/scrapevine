@@ -23,18 +23,19 @@ def summarize_image(encoded_image, data_requirements):
             {"type": "text", "text": 
             f"""Your role is to analyse screenshots of clothing products in online stores, 
             and output the necessary characteristics to fill up the following format: {requirements_dict}. 
-            For price, output only the numeric value. 
-            If unable to provide all characteristics, output only an empty python dictionary instead."""},
+            For price, output only the numeric value. If unable to provide all characteristics,
+            do not output any explanation - output only an empty dictionary instead."""},
             {
             "type": "image_url",
             "image_url": {
                 "url": f"data:image/jpeg;base64,{encoded_image}",
+                "detail": "high"
             },
             },
         ],
         }
     ],
-    max_tokens = 100,
+    max_tokens = 200,
     temperature = 0,
     top_p = 0,
     )

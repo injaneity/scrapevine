@@ -9,7 +9,7 @@ def get_image(url):
     options.add_argument("--disable-gpu")  # Necessary for some versions of Chrome
     options.add_argument("--no-sandbox")  # Bypass OS security model, required on Heroku
     options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
-    options.add_argument("--window-size=1024,1024")  # Set appropriate window size
+    options.add_argument("--window-size=1536,1536")  # Set appropriate window size
     options.add_argument("--force-device-scale-factor=1.1")  # Zoom in by 110%
     options.add_argument("--hide-scrollbars")  # Hide scrollbars to avoid them appearing in screenshots
     service = Service(ChromeDriverManager().install())
