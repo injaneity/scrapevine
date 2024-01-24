@@ -35,4 +35,5 @@ def product_search(query, site):
         # Check if there are no more results
         if 'nextPage' not in result.get('queries', {}):
             break
+    print(webpage_urls)
     return webpage_urls

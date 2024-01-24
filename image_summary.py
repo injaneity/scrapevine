@@ -37,4 +37,5 @@ def summarize_image(encoded_image, data_requirements):
     temperature = 0,
     top_p = 0,
     )
+    print(summary.choices[0].message.content)
     return (summary.choices[0].message.content)
