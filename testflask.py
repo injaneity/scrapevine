@@ -26,10 +26,7 @@ def receive_data():
     for link in input_product_list:
         get_image(link)
         product_info = summarize_image(encode_image('webpage_screenshot.png'), data_requirements)
-        if product_info == {}:
-            print("GPT failed to find required data.")
-        else:
-            product_dict = json.loads((product_info.replace("'", '"')))
+        product_dict = json.loads((product_info.replace("'", '"')))
         product_dict["url"] = link
         output_product_list.append(product_dict)
 
