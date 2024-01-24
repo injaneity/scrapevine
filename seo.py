@@ -36,19 +36,3 @@ def product_search(query, site):
         if 'nextPage' not in result.get('queries', {}):
             break
     return webpage_urls
-
-'''
-# Example usage
-api_key = 'AIzaSyC8JhE_upi0lFOpDmN5xTdna5Dzh_RBH5I'
-cse_id = 'b4d45415c77044fae'
-tags = ['blue', 'shoes', 'leather']
-site = 'charleskeith.com/sg'  # Specify the site for the search
-webpage_results = product_search(tags, site, api_key, cse_id)
-
-for url in webpage_results:
-    print(url)
-    
-print(len(webpage_results))
-    
-print("--- %s seconds ---\n" % (time.time() - start))
-'''
