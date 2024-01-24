@@ -6,7 +6,7 @@ def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
-client = OpenAI(api_key='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')
+client = OpenAI(api_key=os.getenv('GPT_API'))
 
 def summarize_image(encoded_image, data_requirements):
 
@@ -23,7 +23,7 @@ def summarize_image(encoded_image, data_requirements):
             {"type": "text", "text": 
             f"""Your role is to analyse screenshots of clothing products in online stores, 
             and output the necessary characteristics to fill up the following format: {requirements_dict}. 
-            For price, output only the numeric value."""},
+            For price, output only the numeric value. If unable to output the characteristics, output an empty dictionary."""},
             {
             "type": "image_url",
             "image_url": {

@@ -1,21 +1,20 @@
 import requests
-
 import os
 
 
 import time
 start = time.time()
 
-def product_search(query, site, api_key, cse_id):
+def product_search(query, site):
     
     search_url = "https://www.googleapis.com/customsearch/v1"
     webpage_urls = []
-    for start_index in range(1, 2):
+    for start_index in range(1, 3):
         params = {
             'q': f"{query} site:{site}",
-            'cx': cse_id,
+            'cx': os.getenv("PSE_ID"),
             'searchType': 'image',
-            'key': api_key,
+            'key': os.getenv("PSE_API"),
             'start': start_index,
             'num': 1
         }
@@ -36,7 +35,6 @@ def product_search(query, site, api_key, cse_id):
         # Check if there are no more results
         if 'nextPage' not in result.get('queries', {}):
             break
-
     return webpage_urls
 
 '''

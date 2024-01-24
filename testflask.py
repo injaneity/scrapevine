@@ -4,10 +4,8 @@ from webpage_to_image import get_image
 from image_summary import encode_image, summarize_image
 import json
 
-api_key = 'AIzaSyC8JhE_upi0lFOpDmN5xTdna5Dzh_RBH5I'
-pse_id = 'b4d45415c77044fae'
-
 app = Flask(__name__)
+app.json.sort_keys = False
 
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
@@ -21,8 +19,7 @@ def receive_data():
     tags = data['tags']
     data_requirements = data['dataRequirements']
 
-    input_product_list = product_search(tags, url, api_key, pse_id)
-    #input_product_list = ['https://www.lovebonito.com/sg/mira-knit-midi-dress.html', 'https://www.pazzion.com/collections/shoes-flats/products/elaia-point-toe-ballerina-flats?variant=42287420899571']
+    input_product_list = product_search(tags, url)
 
     output_product_list = []
 
@@ -37,12 +34,7 @@ def receive_data():
     data_requirements.append("url")
     headers = data_requirements
     header_dict["headers"] = headers
-    header_dict["c"] = "c"
-    header_dict["b"] = "b"
-    header_dict["a"] = "a"
     output_product_list.insert(0, header_dict)
-
-    print(output_product_list)
 
     # Respond back to the frontend
     return output_product_list

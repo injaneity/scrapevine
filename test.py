@@ -7,7 +7,5 @@ logging.basicConfig(
     level=logging.INFO
 )
 
-# get_image('https://www.lovebonito.com/sg/mira-knit-midi-dress.html')
-
 print(summarize_image(encode_image('webpage_screenshot.png'), ['Product Name', 'Price']))
 
