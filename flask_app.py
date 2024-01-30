@@ -83,10 +83,10 @@ def process_data(url, tags, data_requirements):
 
     output_product_list.insert(1, header_dict)
 
+    print(output_product_list)
+
     with open("output.json", "w") as json_file:
         json.dump(output_product_list, json_file)
-
-    print(output_product_list)
 
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
@@ -107,7 +107,7 @@ def receive_data():
 def reply_result():
     with open("output.json") as json_file:
         output_json = json.load(json_file)
-        return output_json
+        return jsonify(output_json)
 
 if __name__ == '__main__':
     app.run(debug=True)
