@@ -1,10 +1,12 @@
 from flask import Flask, request, jsonify
 from celery import Celery
 
-app = Flask(__name__)
-app.json.sort_keys = False
-app.config['CELERY_BROKER_URL'] = 'amqps://keyribfx:GnjDeFVk12DsXeKrGtq746M2_jtIsMjd@moose.rmq.cloudamqp.com/keyribfx'  # Configure RabbitMQ broker
-app.config['CELERY_RESULT_BACKEND'] = 'rpc://'  # Configure result backend
+output_json = {}
+
+app1 = Flask(__name__)
+app1.json.sort_keys = False
+app1.config['CELERY_BROKER_URL'] = 'amqps://keyribfx:GnjDeFVk12DsXeKrGtq746M2_jtIsMjd@moose.rmq.cloudamqp.com/keyribfx'  # Configure RabbitMQ broker
+app1.config['CELERY_RESULT_BACKEND'] = 'rpc://'  # Configure result backend
 
 # Initialize Celery
 celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
@@ -79,10 +81,11 @@ def process_data(url, tags, data_requirements):
 
     output_product_list.insert(1, header_dict)
 
-    # Respond back to the frontend
-    return output_product_list
+    global output_json
+    output_json = output_product_list
+    print(output_json)
 
-@app.route('/receive_data', methods=['POST'])
+@app1.route('/receive_data', methods=['POST'])
 def receive_data():
     # Get JSON data sent from the frontend
     data = request.get_json()
@@ -97,5 +100,14 @@ def receive_data():
     task = process_data.delay(url, tags, data_requirements)  # Sending the task to the queue
     return jsonify({"task_id": task.id}), 202
 
+app2 = Flask(__name__)
+app2.json.sort_keys = False
+
+@app1.route('/reply_result', methods=['POST'])
+def reply_result():
+    print(output_json)
+    return output_json
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app1.run(port=5000, threaded=True, debug=True)
+    app2.run(port=5001, threaded=True, debug=True)
