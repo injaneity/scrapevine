@@ -20,7 +20,7 @@ import time
 from price_analysis import analyse_price
 
 @celery.task
-def process_data(tags, url, data_requirements):
+def process_data(url, tags, data_requirements):
 
     input_product_list = product_search(tags, url)
 
