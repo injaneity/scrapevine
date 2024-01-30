@@ -1,2 +1,2 @@
-worker: python test.py
-web: gunicorn testflask:app
+worker: celery -A app.celery worker --loglevel=info
+web: gunicorn app:app
