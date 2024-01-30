@@ -1,9 +1,7 @@
-from flask import request, jsonify, Flask
+from flask import request, jsonify, Flask, g
 from celery import Celery
 import os
 import json
-
-output_json = []
 
 app = Flask(__name__)
 app.json.sort_keys = False
@@ -96,9 +94,8 @@ def process_data(url, tags, data_requirements):
     # with open("output.json", "w") as json_file:
     #     json.dump(output_product_list, json_file)
 
-    global output_json
-    output_json = output_product_list
-    print("This is output JSON", output_json)
+    g.shared_data = output_product_list
+    print("This is output JSON", g)
 
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
@@ -124,8 +121,11 @@ def reply_result():
     # else:
     #     print("No JSON file.")
     #     return jsonify({"message": "No data available"}), 404
+
+    output_json = getattr(g, 'shared_data', 'Data not available')
     print("This is output JSON again", output_json)
-    if output_json == []:
+
+    if output_json == 'Data not available':
         return jsonify({"message": "No data available"}), 404
     else:
         return output_json
