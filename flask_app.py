@@ -1,6 +1,7 @@
 from flask import request, jsonify, Flask
 from celery import Celery
 import os
+import json
 
 app = Flask(__name__)
 app.json.sort_keys = False
@@ -33,7 +34,7 @@ def process_data(url, tags, data_requirements):
 
     if input_product_list == []:
         print("Empty product list")
-
+        
     else:
         # Initialize a Chrome session
         options = webdriver.ChromeOptions()
@@ -84,8 +85,9 @@ def process_data(url, tags, data_requirements):
 
     output_product_list.insert(1, header_dict)
 
-    global output_json
-    output_json = output_product_list
+    with open("output.json", "w") as json_file:
+        json.dump(output_product_list, json_file, indent=4)
+
     print(output_json)
 
 @app.route('/receive_data', methods=['POST'])
@@ -105,8 +107,9 @@ def receive_data():
 
 @app.route('/reply_result', methods=['POST'])
 def reply_result():
-    print(output_json)
-    return output_json
+    with open("output.json") as json_file:
+        output_json = json.load(json_file)
+        return output_json
 
 if __name__ == '__main__':
     app.run(debug=True)
