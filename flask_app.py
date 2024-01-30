@@ -106,7 +106,7 @@ def receive_data():
 
 @app.route('/reply_result', methods=['POST'])
 def reply_result():
-    with open("output.json") as json_file:
+    with open("output.json", "w") as json_file:
         output_json = json.load(json_file)
         json_file.truncate(0)
         return output_json
