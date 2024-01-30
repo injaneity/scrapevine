@@ -1,10 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import request, jsonify, Blueprint
 from celery import Celery
 import os
 
 output_json = {}
 
-app1 = Flask(__name__)
+app1 = Blueprint("app1", __name__)
 app1.json.sort_keys = False
 app1.config['CELERY_BROKER_URL'] = os.getenv('CLOUDAMQP_URL')  # Configure RabbitMQ broker
 app1.config['CELERY_RESULT_BACKEND'] = 'rpc://'  # Configure result backend
@@ -101,14 +101,4 @@ def receive_data():
     task = process_data.delay(url, tags, data_requirements)  # Sending the task to the queue
     return jsonify({"task_id": task.id}), 202
 
-app2 = Flask(__name__)
-app2.json.sort_keys = False
 
-@app1.route('/reply_result', methods=['POST'])
-def reply_result():
-    print(output_json)
-    return output_json
-
-if __name__ == '__main__':
-    app1.run(port=5000, threaded=True, debug=True)
-    app2.run(port=5001, threaded=True, debug=True)
