@@ -8,7 +8,7 @@ app.json.sort_keys = False
 
 celery = Celery(__name__)
 # Configure Celery settings
-app.config['CELERY_BROKER_URL'] = 'amqps://keyribfx:GnjDeFVk12DsXeKrGtq746M2_jtIsMjd@moose.rmq.cloudamqp.com/keyribfx'
+app.config['CELERY_BROKER_URL'] = os.getenv('CLOUDAMQP_URL')
 app.config['CELERY_RESULT_BACKEND'] = 'rpc://'
 
 celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
