@@ -1,5 +1,5 @@
 from webpage_to_image import get_image
-from image_summary import encode_image, summarize_image
+from gpt_functions import encode_image, summarize_image
 import logging
 
 logging.basicConfig(
@@ -7,5 +7,5 @@ logging.basicConfig(
     level=logging.INFO
 )
 
-print(summarize_image(encode_image('webpage_screenshot.png'), ['Product Name', 'Price']))
-
+get_image('https://www.lovebonito.com/sg/abilene-square-neck-knit-dress.html')
+summarize_image(encode_image('webpage_screenshot.png'), ['Product Type', 'Colour', 'Price'])

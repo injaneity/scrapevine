@@ -9,7 +9,7 @@ def product_search(query, site):
     
     search_url = "https://www.googleapis.com/customsearch/v1"
     webpage_urls = []
-    for start_index in range(1, 3):
+    for start_index in range(1, 4):
         params = {
             'q': f"{query} site:{site}",
             'cx': os.getenv("PSE_ID"),
@@ -31,9 +31,10 @@ def product_search(query, site):
 
         # Extracting webpage URLs where images are found
         webpage_urls.extend([item['image']['contextLink'] for item in result.get('items', [])])
+        webpage_urls = list(dict.fromkeys(webpage_urls)) # Remove duplicate links
 
         # Check if there are no more results
         if 'nextPage' not in result.get('queries', {}):
             break
-    print(webpage_urls)
+    print("Links found: ", str(webpage_urls))
     return webpage_urls
