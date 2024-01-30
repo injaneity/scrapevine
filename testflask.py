@@ -27,15 +27,17 @@ def receive_data():
 
     output_product_list = []
 
-    if input_product_list != []:
+    if input_product_list == []:
+        print("Empty product list")
 
+    else:
         # Initialize a Chrome session
         options = webdriver.ChromeOptions()
         options.add_argument("--headless")  # Run in headless mode, no UI is displayed
         options.add_argument("--disable-gpu")  # Necessary for some versions of Chrome
         options.add_argument("--no-sandbox")  # Bypass OS security model, required on Heroku
         options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
-        options.add_argument("--window-size=1152,1152")  # Set appropriate window size
+        options.add_argument("--window-size=1536,1536")  # Set appropriate window size
         options.add_argument("--force-device-scale-factor=1.1")  # Zoom in by 110%
         options.add_argument("--hide-scrollbars")  # Hide scrollbars to avoid them appearing in screenshots
         options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36")
@@ -61,15 +63,15 @@ def receive_data():
         # Close the browser
         driver.quit()
     
-    analysis_dict = {}
-    price_dict = analyse_price(output_product_list)
+        analysis_dict = {}
+        price_dict = analyse_price(output_product_list)
 
-    for price in price_dict:
-        analysis_dict[price] = price_dict[price]
+        for price in price_dict:
+            analysis_dict[price] = price_dict[price]
 
-    analysis_dict["Trend"] = analyse_trend(output_product_list)
+        analysis_dict["Trend"] = analyse_trend(output_product_list)
 
-    output_product_list.insert(0, analysis_dict)
+        output_product_list.insert(0, analysis_dict)
 
     header_dict = {}
     data_requirements.append("url")
