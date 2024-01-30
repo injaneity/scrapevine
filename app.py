@@ -1,16 +1,17 @@
 from flask import Flask, request, jsonify
 from celery import Celery
+import os
 
 output_json = {}
 
 app1 = Flask(__name__)
 app1.json.sort_keys = False
-app1.config['CELERY_BROKER_URL'] = 'amqps://keyribfx:GnjDeFVk12DsXeKrGtq746M2_jtIsMjd@moose.rmq.cloudamqp.com/keyribfx'  # Configure RabbitMQ broker
+app1.config['CELERY_BROKER_URL'] = os.getenv('CLOUDAMQP_URL')  # Configure RabbitMQ broker
 app1.config['CELERY_RESULT_BACKEND'] = 'rpc://'  # Configure result backend
 
 # Initialize Celery
-celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
-celery.conf.update(app.config)
+celery = Celery(app1.name, broker=app1.config['CELERY_BROKER_URL'])
+celery.conf.update(app1.config)
 
 from pse import product_search
 from gpt_functions import encode_image, summarize_image, analyse_trend
