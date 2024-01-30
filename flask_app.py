@@ -123,7 +123,7 @@ def reply_result():
     # else:
     #     print("No JSON file.")
     #     return jsonify({"message": "No data available"}), 404
-    
+    print("This is output JSON", output_json)
     if output_json == []:
         return jsonify({"message": "No data available"}), 404
     else:
