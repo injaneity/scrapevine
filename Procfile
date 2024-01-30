@@ -1,2 +1,3 @@
-worker: celery -A parent_app.celery worker --loglevel=info
-web: gunicorn parent_app:app
+worker: celery -A worker.celery worker --loglevel=info
+web: gunicorn receive_data:app
+web: gunicorn reply_result:app
