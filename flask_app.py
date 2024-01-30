@@ -23,8 +23,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 import time
 from price_analysis import analyse_price
 
-output_json = {}
-
 @celery.task
 def process_data(url, tags, data_requirements):
 
@@ -86,9 +84,9 @@ def process_data(url, tags, data_requirements):
     output_product_list.insert(1, header_dict)
 
     with open("output.json", "w") as json_file:
-        json.dump(output_product_list, json_file, indent=4)
+        json.dump(output_product_list, json_file)
 
-    print(output_json)
+    print(output_product_list)
 
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
