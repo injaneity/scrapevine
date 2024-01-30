@@ -86,7 +86,6 @@ def process_data(url, tags, data_requirements):
     print(output_product_list)
 
     with open("output.json", "w") as json_file:
-        json_file.truncate(0)
         json.dump(output_product_list, json_file)
 
 @app.route('/receive_data', methods=['POST'])
@@ -107,9 +106,8 @@ def receive_data():
 @app.route('/reply_result', methods=['POST'])
 def reply_result():
     if os.path.exists("output.json") and os.path.getsize("output.json") > 0:
-        with open("output.json", "r+") as json_file:
+        with open("output.json", "r") as json_file:
             output_json = json.load(json_file)
-            json_file.truncate(0)
             return output_json
     else:
         print("No JSON file.")
