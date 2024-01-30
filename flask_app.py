@@ -101,5 +101,10 @@ def receive_data():
     task = process_data.delay(url, tags, data_requirements)  # Sending the task to the queue
     return jsonify({"task_id": task.id}), 202
 
+@app1.route('/reply_result', methods=['POST'])
+def reply_result():
+    print(output_json)
+    return output_json
+
 if __name__ == '__main__':
     app1.run(debug=True)
