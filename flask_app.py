@@ -3,6 +3,8 @@ from celery import Celery
 import os
 import json
 
+output_json = []
+
 app = Flask(__name__)
 app.json.sort_keys = False
 
@@ -91,8 +93,11 @@ def process_data(url, tags, data_requirements):
 
     print(output_product_list)
 
-    with open("output.json", "w") as json_file:
-        json.dump(output_product_list, json_file)
+    # with open("output.json", "w") as json_file:
+    #     json.dump(output_product_list, json_file)
+
+    global output_json
+    output_json = output_product_list
 
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
@@ -111,13 +116,18 @@ def receive_data():
 
 @app.route('/reply_result', methods=['POST'])
 def reply_result():
-    if os.path.exists("output.json") and os.path.getsize("output.json") > 0:
-        with open("output.json", "r") as json_file:
-            output_json = json.load(json_file)
-            return output_json
-    else:
-        print("No JSON file.")
+    # if os.path.exists("output.json") and os.path.getsize("output.json") > 0:
+    #     with open("output.json", "r") as json_file:
+    #         output_json = json.load(json_file)
+    #         return output_json
+    # else:
+    #     print("No JSON file.")
+    #     return jsonify({"message": "No data available"}), 404
+    
+    if output_json == []:
         return jsonify({"message": "No data available"}), 404
+    else:
+        return output_json
 
 if __name__ == '__main__':
     app.run(debug=True)
