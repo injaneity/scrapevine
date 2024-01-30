@@ -2,11 +2,16 @@ from flask import request, jsonify, Flask
 from celery import Celery
 import os
 
-celery = Celery(
-    'myapp',
-    broker=os.getenv('CLOUDAMQP_URL'),  # Replace with your broker URL
-    backend='rpc://',  # Replace with your result backend URL
-)
+app = Flask(__name__)
+app.json.sort_keys = False
+
+celery = Celery(__name__)
+# Configure Celery settings
+app.config['CELERY_BROKER_URL'] = os.getenv('CLOUDAMQP_URL')
+app.config['CELERY_RESULT_BACKEND'] = 'rpc://'
+
+celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
+celery.conf.update(app.config)
 
 from pse import product_search
 from gpt_functions import encode_image, summarize_image, analyse_trend
@@ -83,10 +88,7 @@ def process_data(url, tags, data_requirements):
     output_json = output_product_list
     print(output_json)
 
-app1 = Flask(__name__)
-app1.json.sort_keys = False
-
-@app1.route('/receive_data', methods=['POST'])
+@app.route('/receive_data', methods=['POST'])
 def receive_data():
     # Get JSON data sent from the frontend
     data = request.get_json()
@@ -101,10 +103,10 @@ def receive_data():
     task = process_data.delay(url, tags, data_requirements)  # Sending the task to the queue
     return jsonify({"task_id": task.id}), 202
 
-@app1.route('/reply_result', methods=['POST'])
+@app.route('/reply_result', methods=['POST'])
 def reply_result():
     print(output_json)
     return output_json
 
 if __name__ == '__main__':
-    app1.run(debug=True)
+    app.run(debug=True)
