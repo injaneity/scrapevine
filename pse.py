@@ -12,9 +12,9 @@ def product_search(query, site):
     for start_index in range(1, 4):
         params = {
             'q': f"{query} site:{site}",
-            'cx': "b4d45415c77044fae",
+            'cx': "64cbbab4d121b40fa",
             'searchType': 'image',
-            'key': "AIzaSyC8JhE_upi0lFOpDmN5xTdna5Dzh_RBH5I",
+            'key': "AIzaSyCvp07diectp5r3q_x_vHc8OoWBGATmG5M",
             'start': start_index,
             'num': 1
         }

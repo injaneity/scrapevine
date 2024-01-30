@@ -30,7 +30,7 @@ def process_data(url, tags, data_requirements):
 
     output_product_list = []
 
-    if input_product_list == []:
+    if not input_product_list:
         print("Empty product list")
         
     else:

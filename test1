@@ -1,0 +1,3 @@
+from flask_app import process_data
+
+process_data("https://www.lovebonito.com/sg/", ["dress"], ["Price", "Product Type", "Color"])
