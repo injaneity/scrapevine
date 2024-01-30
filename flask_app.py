@@ -106,10 +106,14 @@ def receive_data():
 
 @app.route('/reply_result', methods=['POST'])
 def reply_result():
-    with open("output.json", "r+") as json_file:
-        output_json = json.load(json_file)
-        json_file.truncate(0)
-        return output_json
+    if os.path.exists("output.json") and os.path.getsize("output.json") > 0:
+        with open("output.json", "r+") as json_file:
+            output_json = json.load(json_file)
+            json_file.truncate(0)
+            return output_json
+    else:
+        print("No JSON file.")
+        return jsonify({"message": "No data available"}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)
