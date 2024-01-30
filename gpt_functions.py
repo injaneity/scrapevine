@@ -6,7 +6,7 @@ def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
-client = OpenAI(api_key=os.getenv('GPT_API'))
+client = OpenAI(api_key='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')
 
 def summarize_image(encoded_image, data_requirements):
 

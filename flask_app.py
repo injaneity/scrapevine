@@ -8,7 +8,7 @@ app.json.sort_keys = False
 
 celery = Celery(__name__)
 # Configure Celery settings
-app.config['CELERY_BROKER_URL'] = os.getenv('CLOUDAMQP_URL')
+app.config['CELERY_BROKER_URL'] = 'amqps://keyribfx:GnjDeFVk12DsXeKrGtq746M2_jtIsMjd@moose.rmq.cloudamqp.com/keyribfx'
 app.config['CELERY_RESULT_BACKEND'] = 'rpc://'
 
 celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
@@ -86,6 +86,7 @@ def process_data(url, tags, data_requirements):
     print(output_product_list)
 
     with open("output.json", "w") as json_file:
+        json_file.truncate(0)
         json.dump(output_product_list, json_file)
 
 @app.route('/receive_data', methods=['POST'])
@@ -107,7 +108,8 @@ def receive_data():
 def reply_result():
     with open("output.json") as json_file:
         output_json = json.load(json_file)
-        return jsonify(output_json)
+        json_file.truncate(0)
+        return output_json
 
 if __name__ == '__main__':
     app.run(debug=True)

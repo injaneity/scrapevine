@@ -12,9 +12,9 @@ def product_search(query, site):
     for start_index in range(1, 4):
         params = {
             'q': f"{query} site:{site}",
-            'cx': os.getenv("PSE_ID"),
+            'cx': "b4d45415c77044fae",
             'searchType': 'image',
-            'key': os.getenv("PSE_API"),
+            'key': "AIzaSyC8JhE_upi0lFOpDmN5xTdna5Dzh_RBH5I",
             'start': start_index,
             'num': 1
         }
