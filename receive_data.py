@@ -5,7 +5,6 @@ import os
 output_json = {}
 
 app1 = Blueprint("app1", __name__)
-app1.json.sort_keys = False
 app1.config['CELERY_BROKER_URL'] = os.getenv('CLOUDAMQP_URL')  # Configure RabbitMQ broker
 app1.config['CELERY_RESULT_BACKEND'] = 'rpc://'  # Configure result backend
 
