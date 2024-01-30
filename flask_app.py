@@ -2,6 +2,7 @@ from flask import request, jsonify, Flask, g
 from celery import Celery
 import os
 import json
+import pika
 
 app = Flask(__name__)
 app.json.sort_keys = False
@@ -88,14 +89,20 @@ def process_data(url, tags, data_requirements):
     header_dict["headers"] = headers
 
     output_product_list.insert(1, header_dict)
-
-    print(output_product_list)
-
+ 
     # with open("output.json", "w") as json_file:
     #     json.dump(output_product_list, json_file)
 
-    g.shared_data = output_product_list
-    print("This is output JSON", g)
+    # Publish the result to RabbitMQ
+    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+    channel = connection.channel()
+    channel.queue_declare(queue='result_queue')
+    channel.basic_publish(exchange='',
+                          routing_key='result_queue',
+                          body=output_product_list)
+    connection.close()
+
+    print("This is output JSON", output_product_list)
 
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
@@ -122,13 +129,17 @@ def reply_result():
     #     print("No JSON file.")
     #     return jsonify({"message": "No data available"}), 404
 
-    output_json = getattr(g, 'shared_data', 'Data not available')
-    print("This is output JSON again", output_json)
-
-    if output_json == 'Data not available':
-        return jsonify({"message": "No data available"}), 404
+    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+    channel = connection.channel()
+    method_frame, header_frame, body = channel.basic_get('result_queue')
+    
+    if method_frame:
+        result_data = body.decode('utf-8')
+        print("This is output JSON again", result_data)
+        return f"Result Data: {result_data}"
     else:
-        return output_json
+        return "No data available"
+
 
 if __name__ == '__main__':
     app.run(debug=True)
