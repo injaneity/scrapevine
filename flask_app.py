@@ -98,6 +98,7 @@ def process_data(url, tags, data_requirements):
 
     global output_json
     output_json = output_product_list
+    print("This is output JSON", output_json)
 
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
@@ -123,7 +124,7 @@ def reply_result():
     # else:
     #     print("No JSON file.")
     #     return jsonify({"message": "No data available"}), 404
-    print("This is output JSON", output_json)
+    print("This is output JSON again", output_json)
     if output_json == []:
         return jsonify({"message": "No data available"}), 404
     else:
