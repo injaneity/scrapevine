@@ -6,7 +6,10 @@ def analyse_price(data_json):
 
     for product in data_json:
 
-        price = float(product["Price"])
+        if not product["Price"]:
+            price = 0
+        else:
+            price = float(product["Price"])
 
         total_price += price
 
@@ -24,3 +27,5 @@ def analyse_price(data_json):
 
     print(price_dict)
     return price_dict
+
+analyse_price([{'Price': '', 'Product Type': 'Dress', 'Color': 'Black', 'url': 'https://www.lovebonito.com/sg/abilene-square-neck-knit-dress.html'}, {'Price': '', 'Product Type': 'Shirt Dress', 'Color': 'Lime', 'url': 'https://www.lovebonito.com/sg/anniston-puff-sleeve-shirt-dress.html'}, {'Price': '49.00', 'Product Type': 'Dress', 'Color': 'White', 'url': 'https://www.lovebonito.com/sg/dacia-drop-waist-ruffle-dress.html'}])

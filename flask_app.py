@@ -59,7 +59,13 @@ def process_data(url, tags, data_requirements):
 
             product_info = summarize_image(encode_image('webpage_screenshot.png'), data_requirements)
             product_dict = json.loads((product_info.replace("'", '"')))
-            if product_dict != {}:
+
+            # Check for empty strings
+            keys_not_empty = all(key != '' for key in product_dict.keys())
+            values_not_empty = all(value != '' for value in product_dict.values())
+
+            # Check if all conditions are met
+            if keys_not_empty and values_not_empty and product_dict != {}:
                 product_dict["url"] = link
                 output_product_list.append(product_dict)
         
