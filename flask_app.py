@@ -4,6 +4,41 @@ import os
 import json
 import redis
 
+output_json1 = [
+    {
+        "Average Price": "32.93",
+        "Highest Price": "49.90",
+        "Lowest Price": "19.00",
+        "Trend": "Brief Analysis: The provided data showcases a small selection of clothing products, specifically dresses, with varying prices and colors. The price range spans from $19.00 to $49.90, indicating a market that caters to mid-range budget consumers. The types of dresses include a Square Neck Knit Dress, a Shirt Dress, and a general Dress category, suggesting a variety in styles that could appeal to different consumer preferences. The colors represented are Black, Lime, and White, which shows a mix of both classic (Black and White) and more vibrant, trendy options (Lime). This diversity in color and style could indicate a market that values both timeless pieces and seasonal trends. For businesspeople looking to enter this market, focusing on offering a variety of dress styles at a mid-range price point could be a strategic approach. Additionally, incorporating both classic colors and a selection of trend-driven hues might cater to a broader customer base. The presence of knit and ruffle details suggests that texture and fabric choice could also be significant factors for consumers in this market."
+    },
+    {
+        "headers": [
+            "Price",
+            "Product Type",
+            "Color",
+            "url"
+        ]
+    },
+    {
+        "Price": "19.00",
+        "Product Type": "Square Neck Knit Dress",
+        "Color": "Black",
+        "url": "https://www.lovebonito.com/sg/abilene-square-neck-knit-dress.html"
+    },
+    {
+        "Price": "29.90",
+        "Product Type": "Shirt Dress",
+        "Color": "Lime",
+        "url": "https://www.lovebonito.com/sg/anniston-puff-sleeve-shirt-dress.html"
+    },
+    {
+        "Price": "49.90",
+        "Product Type": "Dress",
+        "Color": "White",
+        "url": "https://www.lovebonito.com/sg/dacia-drop-waist-ruffle-dress.html"
+    }
+]
+
 redis_conn = redis.from_url(os.getenv("REDIS_URL"))
 
 app = Flask(__name__)
@@ -95,8 +130,8 @@ def process_data(url, tags, data_requirements):
     # with open("output.json", "w") as json_file:
     #     json.dump(output_product_list, json_file)
 
-    redis_conn.set('my_key', json.dumps(output_product_list))
-    print("This is output JSON", output_product_list)
+    redis_conn.set('my_key', json.dumps(output_json1))
+    print("This is output JSON", output_json1)
 
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
@@ -134,3 +169,4 @@ def reply_result():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
