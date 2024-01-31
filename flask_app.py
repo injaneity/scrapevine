@@ -95,7 +95,7 @@ def process_data(url, tags, data_requirements):
     # with open("output.json", "w") as json_file:
     #     json.dump(output_product_list, json_file)
 
-    redis_conn.set('my_key', output_product_list)
+    redis_conn.set('my_key', json.dumps(output_product_list))
     print("This is output JSON", output_product_list)
 
 @app.route('/receive_data', methods=['POST'])
@@ -126,8 +126,8 @@ def reply_result():
     output_json = redis_conn.get('my_key')
     print("This is output JSON again", output_json)
 
-    if data:
-        return data.decode('utf-8')  # Decode from bytes to string
+    if output_json:
+        return json.loads(output_json.decode('utf-8'))  # Decode from bytes to string
     else:
         return jsonify({"message": "No data available"}), 202
 
