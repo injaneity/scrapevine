@@ -2,7 +2,9 @@ from flask import request, jsonify, Flask, g
 from celery import Celery
 import os
 import json
-import pika
+import redis
+
+r = redis.Redis(host='localhost', port=6379, db=0)
 
 app = Flask(__name__)
 app.json.sort_keys = False
@@ -93,15 +95,7 @@ def process_data(url, tags, data_requirements):
     # with open("output.json", "w") as json_file:
     #     json.dump(output_product_list, json_file)
 
-    # Publish the result to RabbitMQ
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
-    channel = connection.channel()
-    channel.queue_declare(queue='result_queue')
-    channel.basic_publish(exchange='',
-                          routing_key='result_queue',
-                          body=output_product_list)
-    connection.close()
-
+    r.set('my_key', output_product_list)
     print("This is output JSON", output_product_list)
 
 @app.route('/receive_data', methods=['POST'])
@@ -128,17 +122,14 @@ def reply_result():
     # else:
     #     print("No JSON file.")
     #     return jsonify({"message": "No data available"}), 404
-
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
-    channel = connection.channel()
-    method_frame, header_frame, body = channel.basic_get('result_queue')
     
-    if method_frame:
-        result_data = body.decode('utf-8')
-        print("This is output JSON again", result_data)
-        return f"Result Data: {result_data}"
+    output_json = r.get('my_key')
+    print("This is output JSON again", output_json)
+
+    if data:
+        return data.decode('utf-8')  # Decode from bytes to string
     else:
-        return "No data available"
+        return jsonify({"message": "No data available"}), 202
 
 
 if __name__ == '__main__':
