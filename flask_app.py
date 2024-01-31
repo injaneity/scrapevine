@@ -4,7 +4,7 @@ import os
 import json
 import redis
 
-r = redis.Redis(host='localhost', port=6379, db=0)
+redis_conn = redis.from_url(os.getenv("REDIS_URL"))
 
 app = Flask(__name__)
 app.json.sort_keys = False
@@ -95,7 +95,7 @@ def process_data(url, tags, data_requirements):
     # with open("output.json", "w") as json_file:
     #     json.dump(output_product_list, json_file)
 
-    r.set('my_key', output_product_list)
+    redis_conn.set('my_key', output_product_list)
     print("This is output JSON", output_product_list)
 
 @app.route('/receive_data', methods=['POST'])
@@ -123,7 +123,7 @@ def reply_result():
     #     print("No JSON file.")
     #     return jsonify({"message": "No data available"}), 404
     
-    output_json = r.get('my_key')
+    output_json = redis_conn.get('my_key')
     print("This is output JSON again", output_json)
 
     if data:
