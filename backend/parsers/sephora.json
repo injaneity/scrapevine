@@ -1,0 +1,74 @@
+{
+    "relevant_elements": {
+        "title": [
+            "Buy Sephora Collection Colorful Blush | Sephora Singapore"
+        ],
+        "price": [
+            "$23.00",
+            "$23.00",
+            "$23.00",
+            "$23.00",
+            "$23.00",
+            "$23.00",
+            "$23.00",
+            "$23.00",
+            "$23.00",
+            "$23.00",
+            "$23.00",
+            "$23.00",
+            "$23.00",
+            "$23.00"
+        ],
+        "name": [
+            "01 Shame On You"
+        ],
+        "description": [
+            "DescriptionSkin Type:Dry, Normal, OilyFinish:Matte, Natural, RadiantFormulation:Pressed PowderWhat it is:An Intensely Colored Blush with a super-fine texture.What it does:Texture: Compact powderCoverage: Buildable, mild to high pigmentationFinish: Matte or shimmerSkin type: Dry, Normal, OilyA blush that will give your face makeup a boostColorful Blush reveals all the power of its color from the first swipe. With its extra-fine and lightweight powdery film, this blush delivers intense and buildable color. Easy to use and apply, it boasts a silky texture that blends seamlessly into the skin to guarantee a natural, colorful result.Available in vibrant shades with matte and shimmer finishes that instantly awaken all skin tones.Enjoy a refreshed complexion all day longAs it blends into the skin, Colorful Blush boosts the complexion’s freshness and radiance, resulting in an immediate healthy-glow effect and cheeks appearing plumped up. Its long-wear formula guarantees that the color stays beautiful and true all day long.What else you need to know:Made in France, this colored compact's contains a pocket mirror. On top of that, its formula is vegan (free from animal-derived ingredients).\n* Learn more about Sephora’s Clean initiativeshere, including thelist of “formulated without” ingredientsandwhat makes a brand Clean + Planet Positive.Disclaimer+ View Full Description",
+            ""
+        ]
+    },
+    "cleaned_json_objects": [
+        {
+            "transactionName": "e1ZcFRRbCg5RQRdEQl0WQQkJQw=="
+        },
+        {
+            "name": "New"
+        },
+        {
+            "name": "Makeup"
+        },
+        {
+            "name": "Skincare"
+        },
+        {
+            "name": "Hair"
+        },
+        {
+            "name": "Tools & Brushes"
+        },
+        {
+            "name": "Bath & Body"
+        },
+        {
+            "name": "Fragrance"
+        },
+        {
+            "name": "Clean"
+        },
+        {
+            "name": "Gifts"
+        },
+        {
+            "name": "Brands"
+        },
+        {
+            "name": "Sale"
+        },
+        {
+            "ceo_name": null,
+            "company_name": null,
+            "entity_name": "Sephora Digital SEA Pte Ltd",
+            "schema_description": "Retail chain with a selection of upmarket makeup, perfumes, beauty & skincare products"
+        }
+    ]
+}

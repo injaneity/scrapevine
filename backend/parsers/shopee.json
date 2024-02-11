@@ -1,0 +1,84 @@
+{
+    "relevant_elements": {
+        "title": [
+            "HEYXI Peach Gentle Makeup Remover Gentle Makeup Remover Gentle Moisturizing Cleansing 300ML | Shopee Singapore"
+        ],
+        "price": [],
+        "name": [],
+        "description": []
+    },
+    "cleaned_json_objects": [
+        {
+            "display_name": "Beauty"
+        },
+        {
+            "display_name": "Makeup"
+        },
+        {
+            "display_name": "Makeup Removers"
+        },
+        {
+            "display_name": "Beauty & Personal Care"
+        },
+        {
+            "display_name": "Makeup"
+        },
+        {
+            "display_name": "Makeup Remover"
+        },
+        {
+            "name": ""
+        },
+        {
+            "show_lowest_price_guarantee": false,
+            "show_best_price_guarantee": false,
+            "show_official_shop_label_in_title": false
+        },
+        {
+            "name": "label_ship_from"
+        },
+        {
+            "display_name": "Beauty & Personal Care"
+        },
+        {
+            "display_name": "Makeup"
+        },
+        {
+            "display_name": "Makeup Remover"
+        },
+        {
+            "exclusive_price_label": null
+        },
+        {
+            "display_name": "Beauty"
+        },
+        {
+            "display_name": "Makeup"
+        },
+        {
+            "display_name": "Makeup Removers"
+        },
+        {
+            "display_name": "Beauty & Personal Care"
+        },
+        {
+            "display_name": "Makeup"
+        },
+        {
+            "display_name": "Makeup Remover"
+        },
+        {
+            "name": ""
+        },
+        {
+            "priceBeforeDiscount": -1,
+            "currentPrice": -1,
+            "currentPriceFormatted": "$6.43",
+            "priceBeforeDiscountFormatted": ""
+        },
+        {
+            "exp_name": "VoucherGrid_RightSwipe_RW1",
+            "group_name": "Control"
+        }
+    ]
+}
