@@ -56,9 +56,6 @@
             "childCategoryName": "Docks & Stands"
         },
         {
-            "childCategoryName": ""
-        },
-        {
             "childCategoryName": "Headphones & Headsets"
         },
         {
@@ -75,9 +72,6 @@
         },
         {
             "childCategoryName": "Smart Speakers"
-        },
-        {
-            "childCategoryName": ""
         },
         {
             "childCategoryName": "Smartwatches"
@@ -104,9 +98,6 @@
             "childCategoryName": "Gesture Control"
         },
         {
-            "childCategoryName": ""
-        },
-        {
             "childCategoryName": "PlayStation Controllers"
         },
         {
@@ -129,9 +120,6 @@
         },
         {
             "childCategoryName": "Xbox Chargers"
-        },
-        {
-            "childCategoryName": ""
         },
         {
             "childCategoryName": "Memory Cards"
@@ -164,9 +152,6 @@
             "childCategoryName": "Instant Camera Films"
         },
         {
-            "childCategoryName": ""
-        },
-        {
             "childCategoryName": "Monitors"
         },
         {
@@ -191,9 +176,6 @@
             "childCategoryName": "PC Audio"
         },
         {
-            "childCategoryName": ""
-        },
-        {
             "childCategoryName": "External Hard Drives"
         },
         {
@@ -215,9 +197,6 @@
             "childCategoryName": "Storage for Mac"
         },
         {
-            "childCategoryName": ""
-        },
-        {
             "childCategoryName": "Printers"
         },
         {
@@ -234,9 +213,6 @@
         },
         {
             "childCategoryName": "Fax Machines"
-        },
-        {
-            "childCategoryName": ""
         },
         {
             "childCategoryName": "Graphic Cards"
@@ -269,9 +245,6 @@
             "childCategoryName": "Front Bay Devices"
         },
         {
-            "childCategoryName": ""
-        },
-        {
             "childCategoryName": "Access Points"
         },
         {
@@ -299,9 +272,6 @@
             "childCategoryName": "Wireless USB Adapters"
         },
         {
-            "childCategoryName": ""
-        },
-        {
             "childCategoryName": "Laptops & Notebooks"
         },
         {
@@ -311,9 +281,6 @@
             "childCategoryName": "2-in-1s"
         },
         {
-            "childCategoryName": ""
-        },
-        {
             "childCategoryName": "All-In-One"
         },
         {
@@ -321,9 +288,6 @@
         },
         {
             "childCategoryName": "DIY"
-        },
-        {
-            "childCategoryName": ""
         },
         {
             "childCategoryName": "PlayStation Consoles"
@@ -341,12 +305,6 @@
             "childCategoryName": "Nintendo Games"
         },
         {
-            "childCategoryName": "Nintendo Joy-Cons"
-        },
-        {
-            "childCategoryName": "Nintendo Screen Protectors"
-        },
-        {
             "childCategoryName": "Xbox Consoles"
         },
         {
@@ -354,9 +312,6 @@
         },
         {
             "childCategoryName": "Other Gaming Consoles"
-        },
-        {
-            "childCategoryName": ""
         },
         {
             "childCategoryName": "Sports & Action Camera"
@@ -369,9 +324,6 @@
         },
         {
             "childCategoryName": "Professional Video Camera"
-        },
-        {
-            "childCategoryName": ""
         },
         {
             "childCategoryName": "IP Security Cameras"
@@ -389,9 +341,6 @@
             "childCategoryName": "Dummy Cameras"
         },
         {
-            "childCategoryName": ""
-        },
-        {
             "childCategoryName": "DSLR"
         },
         {
@@ -404,9 +353,6 @@
             "childCategoryName": "Instant Camera"
         },
         {
-            "childCategoryName": ""
-        },
-        {
             "childCategoryName": "Drones"
         },
         {
@@ -414,9 +360,6 @@
         },
         {
             "childCategoryName": "Walkie-Talkies"
-        },
-        {
-            "childCategoryName": ""
         },
         {
             "childCategoryName": "Projectors"
@@ -434,28 +377,10 @@
             "childCategoryName": "Blu-Ray/DVD Players"
         },
         {
-            "childCategoryName": "Media Players"
-        },
-        {
-            "childCategoryName": ""
-        },
-        {
             "childCategoryName": "Soundbars"
         },
         {
             "childCategoryName": "Karaoke Systems"
-        },
-        {
-            "childCategoryName": "Home Entertainment"
-        },
-        {
-            "childCategoryName": "Portable Players"
-        },
-        {
-            "childCategoryName": "Live Sound & Stage Equipment"
-        },
-        {
-            "childCategoryName": ""
         },
         {
             "childCategoryName": "Antennas"
@@ -477,9 +402,6 @@
         },
         {
             "childCategoryName": "3D Glasses"
-        },
-        {
-            "childCategoryName": ""
         },
         {
             "childCategoryName": "Washing Machines"
@@ -510,9 +432,6 @@
         },
         {
             "childCategoryName": "Water Heater"
-        },
-        {
-            "childCategoryName": ""
         },
         {
             "childCategoryName": "Food Processor"
@@ -548,9 +467,6 @@
             "childCategoryName": "Specialty Cookware"
         },
         {
-            "childCategoryName": ""
-        },
-        {
             "childCategoryName": "Fan"
         },
         {
@@ -570,9 +486,6 @@
         },
         {
             "childCategoryName": "Air Purifier Accessories"
-        },
-        {
-            "childCategoryName": ""
         },
         {
             "childCategoryName": "Vacuum Cleaner"
@@ -597,9 +510,6 @@
         },
         {
             "childCategoryName": "Sewing Machine"
-        },
-        {
-            "childCategoryName": ""
         },
         {
             "childCategoryName": "Hair Dryer & Styling"
@@ -692,9 +602,6 @@
             "childCategoryName": "Hair Coloring"
         },
         {
-            "childCategoryName": "Gifts & Value Sets"
-        },
-        {
             "childCategoryName": "Hair Care Accessories"
         },
         {
@@ -717,9 +624,6 @@
         },
         {
             "childCategoryName": "Hair Removal"
-        },
-        {
-            "childCategoryName": "Gifts & Value Sets"
         },
         {
             "childCategoryName": "Foot Care"
@@ -779,9 +683,6 @@
             "childCategoryName": "Deodorants"
         },
         {
-            "childCategoryName": "Foot Care"
-        },
-        {
             "childCategoryName": "Insect Repellent"
         },
         {
@@ -807,9 +708,6 @@
         },
         {
             "childCategoryName": "Bath & Body"
-        },
-        {
-            "childCategoryName": "Deodorants"
         },
         {
             "childCategoryName": "Face Skin Care Tools"
@@ -1496,9 +1394,6 @@
             "childCategoryName": "Fresh Seafood"
         },
         {
-            "childCategoryName": "Fresh Milk"
-        },
-        {
             "childCategoryName": "Butter, Spreads & Margarine"
         },
         {
@@ -1632,9 +1527,6 @@
         },
         {
             "childCategoryName": "Bedroom Furniture"
-        },
-        {
-            "childCategoryName": "Mattresses"
         },
         {
             "childCategoryName": "Living Room Furniture"
@@ -1772,9 +1664,6 @@
             "childCategoryName": "Kitchen & Table Linen"
         },
         {
-            "childCategoryName": "Kitchen & Dining Furniture"
-        },
-        {
             "childCategoryName": "BBQ & Outdoor Dining"
         },
         {
@@ -1782,12 +1671,6 @@
         },
         {
             "childCategoryName": "Outdoor & Gardening Power Tools"
-        },
-        {
-            "childCategoryName": "Outdoor Furniture"
-        },
-        {
-            "childCategoryName": "Outdoor Lighting"
         },
         {
             "childCategoryName": "Gardening Tools"
@@ -1844,9 +1727,6 @@
             "childCategoryName": "Filing & Document Presentation"
         },
         {
-            "childCategoryName": "Bookcases & Shelving"
-        },
-        {
             "childCategoryName": "Hardware"
         },
         {
@@ -1880,9 +1760,6 @@
             "childCategoryName": "Protective Clothing & Equipment"
         },
         {
-            "childCategoryName": "Work Lights"
-        },
-        {
             "childCategoryName": "Cleaning Buckets & Tubs"
         },
         {
@@ -1890,9 +1767,6 @@
         },
         {
             "childCategoryName": "Garbage & Recycling Bins"
-        },
-        {
-            "childCategoryName": "Laundry Baskets & Hampers"
         },
         {
             "childCategoryName": "Clothes Line & Drying Racks"
@@ -1938,12 +1812,6 @@
         },
         {
             "childCategoryName": "Filing Cabinets & Office Stands"
-        },
-        {
-            "childCategoryName": "Home Office Desks"
-        },
-        {
-            "childCategoryName": "Home Office Chairs"
         },
         {
             "childCategoryName": "Musical Instruments"
@@ -2063,28 +1931,13 @@
             "childCategoryName": "Beachwear & Accessories"
         },
         {
-            "childCategoryName": "Dresses"
-        },
-        {
-            "childCategoryName": "Tops"
-        },
-        {
             "childCategoryName": "Bottoms"
-        },
-        {
-            "childCategoryName": "Jackets & Coats"
         },
         {
             "childCategoryName": "Hoodies"
         },
         {
             "childCategoryName": "Underwear & Sleepwear"
-        },
-        {
-            "childCategoryName": "Socks & Tights"
-        },
-        {
-            "childCategoryName": "Swimsuits"
         },
         {
             "childCategoryName": "Hair Accessories"
@@ -2105,16 +1958,7 @@
             "childCategoryName": "Flats & Slip-Ons"
         },
         {
-            "childCategoryName": "Sneakers"
-        },
-        {
-            "childCategoryName": "Boots"
-        },
-        {
             "childCategoryName": "Formal Shoes"
-        },
-        {
-            "childCategoryName": "Shoes Accessories"
         },
         {
             "childCategoryName": "T-Shirts & Tanks"
@@ -2129,46 +1973,16 @@
             "childCategoryName": "Pants"
         },
         {
-            "childCategoryName": "Shorts"
-        },
-        {
-            "childCategoryName": "Jeans"
-        },
-        {
-            "childCategoryName": "Hoodies & Sweatshirts"
-        },
-        {
-            "childCategoryName": "Sweaters & Cardigans"
-        },
-        {
-            "childCategoryName": "Jackets & Coats"
-        },
-        {
             "childCategoryName": "Suits"
         },
         {
-            "childCategoryName": "Muslim Wear"
-        },
-        {
             "childCategoryName": "Socks"
-        },
-        {
-            "childCategoryName": "Sneakers"
         },
         {
             "childCategoryName": "Flip Flops & Sandals"
         },
         {
             "childCategoryName": "Slip-Ons & Loafers"
-        },
-        {
-            "childCategoryName": "Formal Shoes"
-        },
-        {
-            "childCategoryName": "Boots"
-        },
-        {
-            "childCategoryName": "Shoes Accessories"
         },
         {
             "childCategoryName": "Briefs"
@@ -2189,52 +2003,13 @@
             "childCategoryName": "Pants & Jeans"
         },
         {
-            "childCategoryName": "Shorts"
-        },
-        {
-            "childCategoryName": "Hoodies"
-        },
-        {
-            "childCategoryName": "Sweaters & Cardigans"
-        },
-        {
-            "childCategoryName": "Jackets & Coats"
-        },
-        {
             "childCategoryName": "Sleepwear"
         },
         {
             "childCategoryName": "Underwear"
         },
         {
-            "childCategoryName": "Socks"
-        },
-        {
             "childCategoryName": "Swimwear"
-        },
-        {
-            "childCategoryName": "Umbrellas & Rainwear"
-        },
-        {
-            "childCategoryName": "Hats & Caps"
-        },
-        {
-            "childCategoryName": "Sneakers"
-        },
-        {
-            "childCategoryName": "Flip Flops, Slides & Sandals"
-        },
-        {
-            "childCategoryName": "Formal Shoes"
-        },
-        {
-            "childCategoryName": "Boots"
-        },
-        {
-            "childCategoryName": "Slip-Ons & Loafers"
-        },
-        {
-            "childCategoryName": "Shoes Accessories"
         },
         {
             "childCategoryName": "Tote Bags"
@@ -2288,22 +2063,10 @@
             "childCategoryName": "Crossbody Bags"
         },
         {
-            "childCategoryName": "Tote Bags"
-        },
-        {
-            "childCategoryName": "Card Holders"
-        },
-        {
             "childCategoryName": "Coin Holders & Pouches"
         },
         {
             "childCategoryName": "Key Holders"
-        },
-        {
-            "childCategoryName": "Backpacks"
-        },
-        {
-            "childCategoryName": "Wallets"
         },
         {
             "childCategoryName": "Laptop Bags"
@@ -2315,15 +2078,6 @@
             "childCategoryName": "Backpacks Trolley"
         },
         {
-            "childCategoryName": "Backpacks"
-        },
-        {
-            "childCategoryName": "Accessories"
-        },
-        {
-            "childCategoryName": "Luggage"
-        },
-        {
             "childCategoryName": "Casual"
         },
         {
@@ -2337,27 +2091,6 @@
         },
         {
             "childCategoryName": "Luxury"
-        },
-        {
-            "childCategoryName": "Accessories"
-        },
-        {
-            "childCategoryName": "Casual"
-        },
-        {
-            "childCategoryName": "Formal"
-        },
-        {
-            "childCategoryName": "Sports"
-        },
-        {
-            "childCategoryName": "Pre-owned"
-        },
-        {
-            "childCategoryName": "Luxury"
-        },
-        {
-            "childCategoryName": "Accessories"
         },
         {
             "childCategoryName": "Rings"
@@ -2378,40 +2111,19 @@
             "childCategoryName": "Fine Necklaces"
         },
         {
-            "childCategoryName": "Rings"
-        },
-        {
-            "childCategoryName": "Earrings"
-        },
-        {
             "childCategoryName": "Sunglasses"
         },
         {
             "childCategoryName": "Eyeglasses"
         },
         {
-            "childCategoryName": "Hair Accessories"
-        },
-        {
             "childCategoryName": "Face Mask"
         },
         {
             "childCategoryName": "Belts"
-        },
-        {
-            "childCategoryName": "Hats & Caps"
         },
         {
             "childCategoryName": "Braces"
-        },
-        {
-            "childCategoryName": "Face Mask"
-        },
-        {
-            "childCategoryName": "Hats & Caps"
-        },
-        {
-            "childCategoryName": "Belts"
         },
         {
             "childCategoryName": "Scarves"
@@ -2447,18 +2159,6 @@
             "childCategoryName": "T-Shirts & Tops"
         },
         {
-            "childCategoryName": "Pants"
-        },
-        {
-            "childCategoryName": "Swimwear"
-        },
-        {
-            "childCategoryName": "Bags"
-        },
-        {
-            "childCategoryName": "Accessories"
-        },
-        {
             "childCategoryName": "Running Shoes"
         },
         {
@@ -2490,54 +2190,9 @@
         },
         {
             "childCategoryName": "Tennis Shoes"
-        },
-        {
-            "childCategoryName": "T-Shirts & Tops"
-        },
-        {
-            "childCategoryName": "Pants"
-        },
-        {
-            "childCategoryName": "Swimwear"
         },
         {
             "childCategoryName": "Jerseys"
-        },
-        {
-            "childCategoryName": "Bags"
-        },
-        {
-            "childCategoryName": "Running Shoes"
-        },
-        {
-            "childCategoryName": "Sports Sneakers"
-        },
-        {
-            "childCategoryName": "Basketball Shoes"
-        },
-        {
-            "childCategoryName": "Football Shoes"
-        },
-        {
-            "childCategoryName": "Hiking Shoes"
-        },
-        {
-            "childCategoryName": "Badminton Shoes"
-        },
-        {
-            "childCategoryName": "Sports Sandals"
-        },
-        {
-            "childCategoryName": "Water Shoes"
-        },
-        {
-            "childCategoryName": "Cycling Shoes"
-        },
-        {
-            "childCategoryName": "Golf Shoes"
-        },
-        {
-            "childCategoryName": "Tennis Shoes"
         },
         {
             "childCategoryName": "Bikes"
@@ -2612,9 +2267,6 @@
             "childCategoryName": "Punching bags"
         },
         {
-            "childCategoryName": "Gloves"
-        },
-        {
             "childCategoryName": "Protective gears"
         },
         {
@@ -2654,16 +2306,10 @@
             "childCategoryName": "Volleyball"
         },
         {
-            "childCategoryName": "Musical Instruments"
-        },
-        {
             "childCategoryName": "Keyboards & Pianos"
         },
         {
             "childCategoryName": "Guitars"
-        },
-        {
-            "childCategoryName": "Books"
         },
         {
             "childCategoryName": "Car Care"
@@ -2723,94 +2369,24 @@
             "childCategoryName": "Motorcycle Tools & Maintenance"
         },
         {
-            "ignorePackageNameInUri": true,
             "name": "@ali/mui-feloader"
         },
         {
-            "ignorePackageNameInUri": true,
             "name": "@ali/lzdmod-loader"
         },
         {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true,
             "name": "@ali/lzdmod-site-nav-pc"
         },
         {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true,
             "name": "@ali/lzdmod-site-menu-pc"
         },
         {
-            "ignorePackageNameInUri": true,
             "name": "@ali/lzdmod-site-menu-nav-pc"
         },
         {
-            "ignorePackageNameInUri": true,
             "name": "@ali/lzdmod-desktop-footer"
         },
         {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true
-        },
-        {
-            "ignorePackageNameInUri": true,
             "name": "@ali/lzdmod-redmart-category-tree"
         }
     ]
