@@ -3,6 +3,27 @@ import re
 from bs4 import BeautifulSoup
 
 # part 1: extract all elements with keyword
+
+def keyword_unique(json_obj):
+    # Check if the top-level JSON object is a list
+    if isinstance(json_obj, list):
+        # Remove duplicates from the list and apply recursion for each element
+        seen = set()
+        cleaned_list = []
+        for item in json_obj:
+            if item not in seen:
+                seen.add(item)
+                cleaned_list.append(keyword_unique(item))
+        return cleaned_list
+    elif isinstance(json_obj, dict):  # If the element is a dictionary
+        # Apply the function recursively to each value in the dictionary
+        for key in json_obj:
+            json_obj[key] = keyword_unique(json_obj[key])
+        return json_obj
+    else:
+        # Return the element itself if it's neither a dict nor a list
+        return json_obj
+
 def keyword_data(html_content, keywords):
     soup = BeautifulSoup(html_content, 'html.parser')
     data = {}
@@ -22,6 +43,8 @@ def keyword_data(html_content, keywords):
                    soup.find_all(id=re.compile(f'\\b{keyword}\\b', re.IGNORECASE))
         for element in elements:
             data[keyword].append(element.get_text(strip=True))
+            
+    data = keyword_unique(data)
 
     return data
         
@@ -41,6 +64,8 @@ def json_filter(obj, retain_keywords, exclude_keywords):
         return [json_filter(item, retain_keywords, exclude_keywords) for item in obj]
     else:
         return obj
+    
+
 def json_unique(lst):
     seen = set()
     unique_dicts = []
@@ -76,7 +101,7 @@ def json_obj_data(html_content, include_terms, exclude_terms):
 
 def html_clean(html_content, keywords):
     
-    exclude_terms = ['childCategory', 'testing']
+    exclude_terms = ['childCategory', 'itemNamein', 'promotionname', 'assetname']
     
     combined_data = {
         "html_elements": keyword_data(html_content, keywords),
@@ -84,8 +109,14 @@ def html_clean(html_content, keywords):
     }
     
     # test file for debugging
-   #with open('./output.json', 'w', encoding='utf-8') as out_file:
-        #json.dump(combined_data, out_file, ensure_ascii=False, indent=4)
+    json_string = json.dumps(combined_data)
+
+    # Tokenize the JSON string
+    # Each character in the JSON string is considered a token in this context
+    print(len(json_string))
+
+    with open('./output.json', 'w', encoding='utf-8') as out_file:
+        json.dump(combined_data, out_file, ensure_ascii=False, indent=4)
     return(combined_data)
         
 # Example usage

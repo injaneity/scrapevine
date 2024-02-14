@@ -1,9 +1,16 @@
-Act as a high-level JSON data analysis provider, meant to isolate key information from complicated JSON files on a single product.
-Since the provided JSON object you are receiving is a processed version of a website's HTML, there are some values that may not be necessary.
-From the file I give you, analyse the data based on its proximity to each other and relevance, and return me:
-    
-    1. Name of the product (unique)
-    2. Price of the product (unique for product with only one variant, and can be a range for products with multiple variants)
-    3. Description of the product (unique)
 
-Return this data in the form of a JSON object. Price can be a list if there are multiple values you feel are relevant. The JSON object is as follows:
+
+Act as a high-level JSON analysis provider, meant to augment the webscraping process by extracting key information on a single product.
+The JSON you are receiving is a processed version of a website's HTML, and some values are more significant than others.
+Analyse the file based on its proximity and relevance to other values, and return me a JSON object with the following requirements:
+
+    1. product_name: Name of the product (unique)
+    2. product_price: Price of the product (can either be a unique value, or a range of values, which should then be returned in the form of a list)
+        - if there is a range of prices, give the lowest, highest and average price in separate keys.
+        - the prices you list for each product must make sense in the context of the product and brand.
+    3. product_description: Description of the product (unique)
+    4. product_analysis: Finally, any analysis of the JSON or product details that would be useful to the client. DO NOT mention anything about the JSON, only about the insights found.
+        - provide this analysis in the form a short paragraph, condensing the information as much as possible
+
+Return me only a JSON object, with no other text outside of it. The JSON object should have keys in accordance with the requirements given.
+For unique keys such as product description and product analysis, do not have any nested keys inside it.

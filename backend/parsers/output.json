@@ -1,0 +1,38 @@
+{
+    "html_elements": {
+        "title": "Glorious GPBT Celestial Fire Premium Keycaps| Mecha Store",
+        "name": [],
+        "price": [
+            "VendorGlorious PC Gaming RaceRegular price$59.00 SGDRegular price$149.00 SGDSale price$59.00 SGDSaleUnit price/perAvailabilitySold out",
+            "$59.00 SGD",
+            "$149.00 SGD",
+            "Sale",
+            "/per",
+            "Sold out",
+            "Regular price$9.90 SGDRegular priceSale price$9.90 SGDSaleUnit price/perAvailabilitySold out",
+            "$9.90 SGD",
+            "",
+            "Regular price$59.00 SGDRegular price$79.00 SGDSale price$59.00 SGDSaleUnit price/perAvailabilitySold out",
+            "$79.00 SGD",
+            "Regular price$1.32 SGDRegular priceSale price$1.32 SGDSaleUnit price/perAvailabilitySold out",
+            "$1.32 SGD"
+        ],
+        "description": []
+    },
+    "json_objects": [
+        {
+            "name": "Debut - 2024"
+        },
+        {
+            "name": "Glorious GPBT Celestial Fire Premium Keycaps",
+            "price": "59.00"
+        },
+        {
+            "name": "Mecha"
+        },
+        {
+            "price": 59.0,
+            "priceCurrency": "SGD"
+        }
+    ]
+}
