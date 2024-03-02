@@ -101,6 +101,9 @@ def json_obj_data(html_content, include_terms, exclude_terms):
 
 def html_clean(html_content, keywords):
     
+    keywords.append("price")
+    keywords.append("name")
+    
     exclude_terms = ['childCategory', 'itemNamein', 'promotionname', 'assetname']
     
     combined_data = {
