@@ -11,6 +11,8 @@ def html_extract(url):
 
     # Setting up Chrome WebDriver with options
     options = Options()
+    options.add_argument('--headless') # Added for optimization
+    options.add_argument('--disable-gpu') # Added for optimization
     options.add_argument('--incognito')
     options.add_argument('--no-sandbox')  # Added for optimization
     options.add_argument('--disable-dev-shm-usage')  # Added for optimization
