@@ -31,14 +31,14 @@ def main(url, tags, keywords):
                 print(f'{url} generated an exception: {exc}')
     return results
 
-if __name__ == '__main__':
-    start_time = time.time()
-    url = "amazon.sg"
-    tags = ["coat", "red"]
-    keywords = ["material", "colour"]
-    results = main(url, tags, keywords)
-    for result in results:
-        print(result)
-    print(f"--- Overall time {time.time() - start_time} seconds ---\n")
+# if __name__ == '__main__':
+#     start_time = time.time()
+#     url = "amazon.sg"
+#     tags = ["coat", "red"]
+#     keywords = ["material", "colour"]
+#     results = main(url, tags, keywords)
+#     for result in results:
+#         print(result)
+#     print(f"--- Overall time {time.time() - start_time} seconds ---\n")
 
 
