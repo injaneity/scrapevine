@@ -6,13 +6,17 @@ import redis
 
 redis_conn = redis.from_url(os.getenv("REDIS_URL"))
 
+# Initialize Flask app
 app = Flask(__name__)
 app.json.sort_keys = False
 
-celery = Celery(__name__)
 # Configure Celery settings
 app.config['CELERY_BROKER_URL'] = os.getenv('CLOUDAMQP_URL')
 app.config['CELERY_RESULT_BACKEND'] = 'rpc://'
+
+# Initialize Celery
+celery = Celery(__name__, broker=app.config['CELERY_BROKER_URL'])
+celery.conf.update(app.config)  # Update Celery config with Flask app config
 
 @celery.task
 def process_data(url, tags, keywords):
