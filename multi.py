@@ -20,7 +20,7 @@ def main(url, tags, keywords):
     num_workers = min(len(urls), os.cpu_count() or 1)
     
     results = []
-    with ProcessPoolExecutor(max_workers=num_workers) as executor:
+    with ThreadPoolExecutor(max_workers=num_workers) as executor:
         future_to_url = {executor.submit(process_url, url, keywords): url for url in urls}
         for future in as_completed(future_to_url):
             url = future_to_url[future]
