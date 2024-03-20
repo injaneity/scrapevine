@@ -3,7 +3,7 @@ from celery import Celery
 import os
 import json
 import redis
-from backend.parsers.multi import main
+from multi import main
 
 redis_conn = redis.from_url(os.getenv("REDIS_URL"))
 
