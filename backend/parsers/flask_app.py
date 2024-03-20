@@ -24,7 +24,7 @@ def process_data(url, tags, keywords):
 
     results = main(url, tags, keywords)
 
-    redis_conn.set('my_key', json.dumps(results))
+    redis_conn.set('my_key', json.dumps(results)) # Store the results using redis
     print("This are the results", results)
 
 @app.route('/receive_data', methods=['POST'])
