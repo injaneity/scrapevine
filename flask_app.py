@@ -25,7 +25,7 @@ def process_data(url, tags, keywords):
     results = main(url, tags, keywords)
 
     redis_conn.set('my_key', json.dumps(results)) # Store the results using redis
-    print("This are the results", results)
+    print("These are the results", results)
 
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
@@ -46,7 +46,7 @@ def receive_data():
 def reply_result():
     
     results = redis_conn.get('my_key')
-    print("This are the results again", results)
+    print("These are the results again", results)
 
     if results:
         return json.loads(results.decode('utf-8'))  # Decode from bytes to string

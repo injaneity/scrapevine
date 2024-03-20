@@ -4,8 +4,6 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-# print(os.getenv('GPT_API'))
-
 client = OpenAI(api_key=os.getenv('GPT_API'))
 
 def analyse_json(data):
@@ -13,7 +11,7 @@ def analyse_json(data):
     with open('prompt.txt', 'r') as file:
         prompt_text = file.read().strip()
 
-    # Step 2: Read the data from 'data.json'
+    # Step 2: Read the data from 'data.json' (troubleshooting)
     #with open('./output.json', 'r') as file:
         #data = json.load(file)
     code_text = json.dumps(data, indent=2)
