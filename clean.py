@@ -116,7 +116,7 @@ def html_clean(html_content, keywords):
 
     # Tokenize the JSON string
     # Each character in the JSON string is considered a token in this context
-    print("LENGTH OF CLEANED HTML:", {len(json_string)})
+    print("LENGTH OF CLEANED HTML:", len(json_string))
 
     with open('./output.json', 'w', encoding='utf-8') as out_file:
         json.dump(combined_data, out_file, ensure_ascii=False, indent=4)
