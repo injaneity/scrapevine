@@ -20,7 +20,7 @@ def analyse_json(data):
     combined_input = f"[{prompt_text}]\n\n[code]\n\n{code_text}\n\n[prompt]\n\n{prompt_text}"
     
     summary = client.chat.completions.create(
-    model = "gpt-4-0125-preview",
+    model = "gpt-4-1106-preview",
     messages=[
         {
         "role": "user",

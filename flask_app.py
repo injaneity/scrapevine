@@ -25,7 +25,7 @@ def process_data(url, tags, keywords):
     results = main(url, tags, keywords)
 
     redis_conn.set('my_key', json.dumps(results)) # Store the results using redis
-    print("DATA HAS BEEN PROCESSED:\n", results)
+    print("DATA HAS BEEN PROCESSED:", results)
 
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
