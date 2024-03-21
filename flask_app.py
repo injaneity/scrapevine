@@ -25,7 +25,7 @@ def process_data(url, tags, keywords):
     results = main(url, tags, keywords)
 
     redis_conn.set('my_key', json.dumps(results)) # Store the results using redis
-    print("These are the results", results)
+    print("DATA HAS BEEN PROCESSED:\n", results)
 
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
@@ -33,25 +33,25 @@ def receive_data():
     data = request.get_json()
     
     # Log or process the data here
-    print("Data received:", data)
+    print("DATA RECEIVED FROM FRONTEND:\n", data)
 
     url = data['siteUrl']
     tags = data['tags']
     keywords = data['dataRequirements']
 
     task = process_data.delay(url, tags, keywords)  # Sending the task to the queue
-    return jsonify({"task_id": task.id}), 202
+    return jsonify({"message": "Data is being processed."}), 202
 
 @app.route('/reply_result', methods=['POST'])
 def reply_result():
     
     results = redis_conn.get('my_key')
-    print("These are the results again", results)
 
     if results:
+        print("SENDING RESULT TO FRONTEND:\n", results)
         return json.loads(results.decode('utf-8'))  # Decode from bytes to string
     else:
-        return jsonify({"message": "No data available"}), 202
+        return jsonify({"message": "No data available."}), 202
 
 
 if __name__ == '__main__':
