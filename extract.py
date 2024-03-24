@@ -28,12 +28,11 @@ def extract_html(url):
         
         # Extract the HTML content
         html_content = driver.page_source
+
+        driver.quit()
     
     except:
         print("COULD NOT EXTRACT HTML")
         return None
-
-    finally:
-        driver.quit()
     
     return html_content
