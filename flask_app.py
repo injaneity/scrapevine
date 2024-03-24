@@ -39,10 +39,6 @@ def aggregate_results(results, task_id=None, keywords=None):
 
     output_json = []
     all_results = redis_conn.hgetall(f"results:{task_id}")
-    decoded_results1 = {key.decode('utf-8'): value.decode('utf-8') for key, value in all_results.items()}
-    print(decoded_results1)
-    decoded_results2 = {key.decode('utf-8'): value.decode('utf-8').replace("'", '"') for key, value in all_results.items()}
-    print(decoded_results2)
     decoded_results = {key.decode('utf-8'): json.loads(value.decode('utf-8').replace("'", '"')) for key, value in all_results.items()}
 
     for url, result in decoded_results.items():

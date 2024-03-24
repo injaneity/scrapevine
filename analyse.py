@@ -18,7 +18,8 @@ def analyse_html(data, keywords):
     {"role": "system",
     "content":
     f"""Your role is to analyse html from webpages containing clothing products, 
-            and output the necessary characteristics to fill up the following format: {keyword_dict}. 
+            and output the necessary characteristics to fill up the following format: {keyword_dict}.
+            Each characteristic should take into account all the information provided, not just the matching key-value pairs.
             For price, output only the numeric value. If there are multiple prices, output the median price.
             If unable to provide a characteristic, do not output any explanation - leave that characteristic blank and output the entire dictionary as per normal."""},
     {"role": "user",

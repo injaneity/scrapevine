@@ -109,7 +109,7 @@ def clean_html(html_content, keywords):
     }
 
     if "404" in combined_data["html_elements"]["title"]:
-        print("COULD NOT EXTRACT HTML, ERROR 404")
+        print("COULD NOT EXTRACT HTML, 404")
         return None
     
     print("CLEANED HTML:", combined_data)
