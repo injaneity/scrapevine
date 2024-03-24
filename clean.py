@@ -110,28 +110,25 @@ def clean_html(html_content, keywords):
         "html_elements": keyword_data(html_content, keywords),
         "json_objects": json_obj_data(html_content, keywords, exclude_terms)
     }
-    
-    # test file for debugging
-    json_string = json.dumps(combined_data)
 
     # Tokenize the JSON string
     # Each character in the JSON string is considered a token in this context
-    print("LENGTH OF CLEANED HTML:", len(json_string))
+    
+    print("CLEANED HTML:", json.dumps(combined_data))
 
     with open('./output.json', 'w', encoding='utf-8') as out_file:
         json.dump(combined_data, out_file, ensure_ascii=False, indent=4)
     return(combined_data)
         
 # Example usage
+# '''
+# file_path = './data.txt'
+# with open(file_path, 'r') as file:
+#     html_content = file.read()
 
-'''
-file_path = './data.txt'
-with open(file_path, 'r') as file:
-    html_content = file.read()
+# # Assuming the HTML content is loaded into `html_content`
+# keywords = ['name', 'price', 'description']
+# html_clean(html_content, keywords)
 
-# Assuming the HTML content is loaded into `html_content`
-keywords = ['name', 'price', 'description']
-html_clean(html_content, keywords)
-
-print(f"Cleaned JSON objects have been saved to JSON file")
-'''
+# print(f"Cleaned JSON objects have been saved to JSON file")
+# '''

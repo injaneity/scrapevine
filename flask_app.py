@@ -37,7 +37,7 @@ def process_data(url, keywords, task_id):
 def aggregate_results(results, task_id=None, keywords=None):
 
     output_json = []
-    all_results = json.loads(redis_conn.hgetall(f"results:{task_id}"))
+    all_results = redis_conn.hgetall(f"results:{task_id}")
     decoded_results = {key.decode('utf-8'): json.loads(value.decode('utf-8')) for key, value in all_results.items()}
 
     for url, result in decoded_results:

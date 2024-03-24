@@ -9,18 +9,18 @@ from webdriver_manager.chrome import ChromeDriverManager
 def extract_html(url):
     print(f"Extracting from {url}")
 
-    # Setting up Chrome WebDriver with options
-    options = Options()
-    options.add_argument('--headless') # Added for optimization
-    options.add_argument('--disable-gpu') # Added for optimization
-    options.add_argument('--incognito')
-    options.add_argument('--no-sandbox')  # Added for optimization
-    options.add_argument('--disable-dev-shm-usage')  # Added for optimization
-    driver = webdriver.Chrome(options=options)
-
     try:
+        # Setting up Chrome WebDriver with options
+        options = Options()
+        options.add_argument('--headless') # Added for optimization
+        options.add_argument('--disable-gpu') # Added for optimization
+        options.add_argument('--incognito')
+        options.add_argument('--no-sandbox')  # Added for optimization
+        options.add_argument('--disable-dev-shm-usage')  # Added for optimization
+        driver = webdriver.Chrome(options=options)
+
         driver.implicitly_wait(5)  # Implicit wait
-        
+
         driver.get(url)
         
         # Explicit wait: Wait for the body element to be loaded
@@ -28,6 +28,11 @@ def extract_html(url):
         
         # Extract the HTML content
         html_content = driver.page_source
+    
+    except:
+        print("COULD NOT EXTRACT HTML")
+        return ""
+
     finally:
         driver.quit()
     
