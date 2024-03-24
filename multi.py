@@ -7,8 +7,9 @@ def process_url(url, keywords):
     html_content = extract_html(url)
     if html_content:
         data = clean_html(html_content, keywords)
-        analysis = analyse_html(data, keywords)
-        return analysis
+        if data:
+            analysis = analyse_html(data, keywords)
+            return analysis
     return None
 
 # from concurrent.futures import ThreadPoolExecutor, as_completed

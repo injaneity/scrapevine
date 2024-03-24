@@ -108,10 +108,14 @@ def clean_html(html_content, keywords):
         "json_objects": json_obj_data(html_content, keywords, exclude_terms)
     }
 
+    if "404" in combined_data["html_elements"]["title"]:
+        print("COULD NOT EXTRACT HTML, ERROR 404")
+        return None
+    
     # Tokenize the JSON string
     # Each character in the JSON string is considered a token in this context
-    print("CLEANED HTML:", json.dumps(combined_data))
 
+    print(f"CLEANED HTML {len(combined_data)}:", combined_data)
     return(combined_data)
         
 # Example usage
