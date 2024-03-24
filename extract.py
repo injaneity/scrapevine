@@ -31,7 +31,7 @@ def extract_html(url):
     
     except:
         print("COULD NOT EXTRACT HTML")
-        return ""
+        return None
 
     finally:
         driver.quit()

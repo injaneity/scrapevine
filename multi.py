@@ -4,13 +4,12 @@ from clean import clean_html
 from analyse import analyse_html
 
 def process_url(url, keywords):
-    try:
-        html_content = extract_html(url)
+    html_content = extract_html(url)
+    if html_content:
         data = clean_html(html_content, keywords)
         analysis = analyse_html(data, keywords)
         return analysis
-    except:
-        return 
+    return None
 
 # from concurrent.futures import ThreadPoolExecutor, as_completed
 # import os

@@ -101,9 +101,6 @@ def json_obj_data(html_content, include_terms, exclude_terms):
 
 def clean_html(html_content, keywords):
     
-    keywords.append("price")
-    keywords.append("name")
-    
     exclude_terms = ['childCategory', 'itemNamein', 'promotionname', 'assetname']
     
     combined_data = {
@@ -113,11 +110,8 @@ def clean_html(html_content, keywords):
 
     # Tokenize the JSON string
     # Each character in the JSON string is considered a token in this context
-    
     print("CLEANED HTML:", json.dumps(combined_data))
 
-    with open('./output.json', 'w', encoding='utf-8') as out_file:
-        json.dump(combined_data, out_file, ensure_ascii=False, indent=4)
     return(combined_data)
         
 # Example usage
