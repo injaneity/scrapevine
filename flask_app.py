@@ -1,9 +1,11 @@
 from flask import request, jsonify, Flask, g
-from celery import Celery
+from celery import Celery, chord
 import os
 import json
 import redis
-from multi import main
+from multi import process_url
+from seo import product_search
+import uuid
 
 redis_conn = redis.from_url(os.getenv("REDIS_URL"))
 
@@ -19,28 +21,42 @@ app.config['CELERY_RESULT_BACKEND'] = 'rpc://'
 celery = Celery(__name__, broker=app.config['CELERY_BROKER_URL'])
 celery.conf.update(app.config)  # Update Celery config with Flask app config
 
+# Celery task to process URL
 @celery.task
-def process_data(url, tags, keywords):
+def process_data(url, keywords, task_id):
 
-    results = main(url, tags, keywords)
+    result = process_url(url, keywords)
 
-    redis_conn.set('my_key', json.dumps(results)) # Store the results using redis
-    print("DATA HAS BEEN PROCESSED:", results)
+    redis_conn.hset(f"results:{task_id}", url, json.dumps(result)) # Store the results using Redis
+    print("URL PROCESSED:", result)
 
+# Celery task to aggregate results
+@celery.task
+def aggregate_results(task_id):
+    all_results = redis_conn.hgetall(f"results:{task_id}")
+    aggregated_result = {url: json.loads(result.decode('utf-8')) for url, result in all_results.items()}
+
+    redis_conn.set("my_key", json.dumps(aggregated_result))  # Store aggregated result in Redis
+    print("RESULTS AGGREGATED:", aggregated_result)
+
+# Flask route to receive POST and start tasks
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
-    # Get JSON data sent from the frontend
-    data = request.get_json()
+    data = request.get_json() # Get JSON data sent from the frontend
+    task_id = str(uuid.uuid4())  # Generate unique task ID
     
     # Log or process the data here
-    print("DATA RECEIVED FROM FRONTEND:\n", data)
-
-    url = data['siteUrl']
+    print("DATA RECEIVED:\n", data)
+    link = data['siteUrl']
     tags = data['tags']
     keywords = data['dataRequirements']
 
-    task = process_data.delay(url, tags, keywords)  # Sending the task to the queue
-    return jsonify({"message": "Data is being processed."}), 202
+    urls = product_search(tags, link)
+
+    subtask_signatures = [process_url.s(url, keywords, task_id) for url in urls] 
+    chord(subtask_signatures)(aggregate_results.s(task_id=task_id))  # Run tasks in parallel
+    
+    return jsonify({"task_id": task_id}), 202
 
 @app.route('/reply_result', methods=['POST'])
 def reply_result():
@@ -48,10 +64,10 @@ def reply_result():
     results = redis_conn.get('my_key')
 
     if results:
-        print("SENDING RESULT TO FRONTEND:\n", results)
+        print("SENDING RESULTS:\n", results)
         return json.loads(results.decode('utf-8'))  # Decode from bytes to string
     else:
-        return jsonify({"message": "No data available."}), 202
+        return jsonify({"message": "No result available."}), 202
 
 
 if __name__ == '__main__':

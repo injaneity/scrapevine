@@ -3,10 +3,10 @@ import time
 import os
 
 # Assuming these are your custom functions
-from seo import product_search
 from extract import html_extract
 from clean import html_clean
 from analyse import analyse_json
+from seo import product_search
 
 def process_url(url, keywords):
     html_content = html_extract(url)
