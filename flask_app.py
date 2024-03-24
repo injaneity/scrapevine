@@ -34,7 +34,7 @@ def process_data(url, keywords, task_id):
 @celery.task
 def aggregate_results(results, task_id=None):
     all_results = redis_conn.hgetall(f"results:{task_id}")
-    aggregated_result = {url: json.loads(result.decode('utf-8')) for url, result in all_results.items()}
+    aggregated_result = {url.decode('utf-8'): json.loads(result.decode('utf-8')) for url, result in all_results.items()}
 
     redis_conn.set("my_key", json.dumps(aggregated_result))  # Store aggregated result in Redis
     print("RESULTS AGGREGATED:", aggregated_result)
