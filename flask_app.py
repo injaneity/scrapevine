@@ -31,7 +31,7 @@ def process_data(url, keywords, task_id):
     
     if result:
         redis_conn.hset(f"results:{task_id}", url, json.dumps(result)) # Store the results using Redis
-    print("URL PROCESSED:", result)
+        print("URL PROCESSED:", result)
 
 # Celery task to aggregate results
 @celery.task
@@ -40,7 +40,8 @@ def aggregate_results(results, task_id=None, keywords=None):
     output_json = []
     all_results = redis_conn.hgetall(f"results:{task_id}")
     decoded_results = {key.decode('utf-8'): json.loads(value.decode('utf-8')) for key, value in all_results.items()}
-    print(type(decoded_results))
+    print(all_results)
+    print(decoded_results)
 
     for url, result in decoded_results.items():
             print(type(result))
