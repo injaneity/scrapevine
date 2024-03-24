@@ -32,7 +32,7 @@ def process_data(url, keywords, task_id):
 
 # Celery task to aggregate results
 @celery.task
-def aggregate_results(task_id):
+def aggregate_results(results, task_id=None):
     all_results = redis_conn.hgetall(f"results:{task_id}")
     aggregated_result = {url: json.loads(result.decode('utf-8')) for url, result in all_results.items()}
 
@@ -54,8 +54,8 @@ def receive_data():
     urls = product_search(tags, link)
 
     subtask_signatures = [process_data.s(url, keywords, task_id) for url in urls]  # Create processing task
-    callback_signature = aggregate_results.s(task_id) # Create callback task
-    chord(subtask_signatures)(callback_signature) # Process in parallel, callback after all completed
+    callback_signature = aggregate_results.s(task_id=task_id) # Create callback task
+    chord(subtask_signatures)(callback_signature) # Process in parallel, then callback after all completed
     
     return jsonify({"task_id": task_id}), 202
 
