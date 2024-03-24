@@ -22,7 +22,7 @@ def analyse_html(data, keywords):
             For price, output only the numeric value. If there are multiple prices, output the median price.
             If unable to provide all characteristics, do not output any explanation - output only an empty dictionary instead."""},
     {"role": "user",
-    "content": data},
+    "content": f"{data}"},
     ],
     max_tokens = 400,
     temperature = 0,
