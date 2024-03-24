@@ -41,12 +41,8 @@ def aggregate_results(results, task_id=None, keywords=None):
     decoded_results = {key.decode('utf-8'): json.loads(value.decode('utf-8')) for key, value in all_results.items()}
 
     for url, result in decoded_results.items():
-        # Check for empty strings
-        keys_not_empty = all(key != '' for key in result.keys())
-        values_not_empty = all(value != '' for value in result.values())
-
-        if keys_not_empty and values_not_empty and result != {}:
-            result["url"] = url   
+        if result != {}:
+            result["url"] = url
             output_json.append(result) # Add a dictionary for each product
 
     #Add a dictionary containing analysis of entire dataset
