@@ -30,7 +30,7 @@ def process_data(url, keywords, task_id):
     result = process_url(url, keywords)
     
     if result:
-        redis_conn.hset(f"results:{task_id}", url, json.dumps(result)) # Store the results using Redis
+        redis_conn.hset(f"results:{task_id}", url, result) # Store the results using Redis
         print("URL PROCESSED:", result)
 
 # Celery task to aggregate results
