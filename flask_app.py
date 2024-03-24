@@ -23,7 +23,7 @@ celery.conf.update(app.config)  # Update Celery config with Flask app config
 
 # Celery task to process URL
 @celery.task
-def process_data(url, keywords, task_id):
+def process_url(url, keywords, task_id):
 
     result = process_url(url, keywords)
 
