@@ -7,7 +7,7 @@ def product_search(query, site):
     
     search_url = "https://www.googleapis.com/customsearch/v1"
     webpage_urls = []
-    for start_index in range(1, 4):
+    for start_index in range(1, 6):
         params = {
             'q': f"{query} site:{site}",
             'cx': os.getenv("PSE_ID"),
