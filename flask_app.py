@@ -43,6 +43,7 @@ def aggregate_results(results, task_id=None, keywords=None):
     print(type(decoded_results))
 
     for url, result in decoded_results.items():
+            print(type(result))
             result["url"] = url
             output_json.append(result) # Add a dictionary for each product
 
