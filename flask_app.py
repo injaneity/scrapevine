@@ -15,7 +15,7 @@ app.json.sort_keys = False
 
 # Configure Celery settings
 app.config['CELERY_BROKER_URL'] = os.getenv('CLOUDAMQP_URL')
-app.config['CELERY_RESULT_BACKEND'] = os.getenv('CLOUDAMQP_URL')
+app.config['CELERY_RESULT_BACKEND'] = os.getenv("REDIS_URL")
 
 # Initialize Celery
 celery = Celery(__name__, broker=app.config['CELERY_BROKER_URL'])
