@@ -112,10 +112,7 @@ def clean_html(html_content, keywords):
         print("COULD NOT EXTRACT HTML, ERROR 404")
         return None
     
-    # Tokenize the JSON string
-    # Each character in the JSON string is considered a token in this context
-
-    print(f"CLEANED HTML {len(combined_data)}:", combined_data)
+    print("CLEANED HTML:", combined_data)
     return(combined_data)
         
 # Example usage
