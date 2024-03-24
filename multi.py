@@ -3,16 +3,16 @@ import time
 import os
 
 # Assuming these are your custom functions
-from extract import html_extract
-from clean import html_clean
-from analyse import analyse_json
+from extract import extract_html
+from clean import clean_html
+from analyse import analyse_html
 from seo import product_search
 
 def process_url(url, keywords):
-    html_content = html_extract(url)
-    data = html_clean(html_content, keywords)
-    analysis_result = analyse_json(data)
-    return analysis_result
+    html_content = extract_html(url)
+    data = clean_html(html_content, keywords)
+    analysis = analyse_html(data, keywords)
+    return analysis
 
 def main(url, tags, keywords):
     urls = product_search(tags, url)

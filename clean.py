@@ -99,7 +99,7 @@ def json_obj_data(html_content, include_terms, exclude_terms):
     return unique_data
 
 
-def html_clean(html_content, keywords):
+def clean_html(html_content, keywords):
     
     keywords.append("price")
     keywords.append("name")

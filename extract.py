@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
-def html_extract(url):
+def extract_html(url):
     print(f"Extracting from {url}")
 
     # Setting up Chrome WebDriver with options
