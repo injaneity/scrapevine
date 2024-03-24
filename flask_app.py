@@ -23,7 +23,7 @@ celery.conf.update(app.config)  # Update Celery config with Flask app config
 
 # Celery task to process URL
 @celery.task
-def process_url(url, keywords, task_id):
+def process_data(url, keywords, task_id):
 
     result = process_url(url, keywords)
 
@@ -53,7 +53,7 @@ def receive_data():
 
     urls = product_search(tags, link)
 
-    subtask_signatures = [process_url.s(url, keywords, task_id) for url in urls] 
+    subtask_signatures = [process_data.s(url, keywords, task_id) for url in urls] 
     chord(subtask_signatures)(aggregate_results.s(task_id=task_id))  # Run tasks in parallel
     
     return jsonify({"task_id": task_id}), 202
