@@ -53,8 +53,9 @@ def receive_data():
 
     urls = product_search(tags, link)
 
-    subtask_signatures = [process_data.s(url, keywords, task_id) for url in urls] 
-    chord(subtask_signatures)(aggregate_results.s(task_id=task_id))  # Run tasks in parallel
+    subtask_signatures = [process_data.s(url, keywords, task_id) for url in urls]  # Create processing task
+    callback_signature = aggregate_results.s(task_id) # Create callback task
+    chord(subtask_signatures)(callback_signature) # Process in parallel, callback after all completed
     
     return jsonify({"task_id": task_id}), 202
 
