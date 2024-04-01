@@ -86,7 +86,7 @@ def aggregate_results(results, task_id=None, keywords=None):
     output_json.insert(1, header_dict)
 
     redis_conn.set(f"aggregated_results:{task_id}", json.dumps(output_json)) # Store aggregated result in Redis
-    print("RESULTS AGGREGATED:", output_json)
+    print("RESULTS AGGREGATED:", json.loads(redis_conn.get(f"aggregated_results:{task_id}").decode('utf-8')))
 
 
 
