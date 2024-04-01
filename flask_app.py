@@ -101,8 +101,7 @@ def reply_result():
         return json.loads(results.decode('utf-8'))
     else:
         print("NO RESULTS AVAILABLE")
-        return '', 200
-
+        return jsonify({"status": "processing"}), 202  # Or use a different status/message as appropriate
 
 
 
