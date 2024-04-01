@@ -95,8 +95,10 @@ def aggregate_results(results, task_id=None, keywords=None):
 @app.route('/reply_result')
 def reply_result():
     task_id = request.args.get('responseId')
+    print("THIS IS THE TASK ID", task_id)
     
     results = redis_conn.get(f"aggregated_results:{task_id}")
+    print("THESE ARE THE RESULTS", results)
 
     if results:
         print("SENDING RESULTS:\n", results)
