@@ -71,7 +71,7 @@ def receive_data():
     print("DATA RECEIVED:\n", data)
     link = data['siteUrl']
     tags = data['tags']
-    keywords = data['dataRequirements']
+    keywords = data['keywords']
 
     urls = product_search(tags, link)
 
