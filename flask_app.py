@@ -30,7 +30,7 @@ celery.conf.update(app.config)  # Update Celery config with Flask app config
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
     data = request.get_json()
-    task_id = str(uuid.uuid4())  # Generate unique task ID
+    responseId = str(uuid.uuid4())  # Generate unique task ID
     
     print("DATA RECEIVED:\n", data)
     link = data['siteUrl']
@@ -39,32 +39,32 @@ def receive_data():
 
     urls = product_search(tags, link)
 
-    subtask_signatures = [process_data.s(url, keywords, task_id) for url in urls]  # Create processing tasks
-    callback_signature = aggregate_results.s(task_id=task_id, keywords=keywords) # Create callback task
+    subtask_signatures = [process_data.s(url, keywords, responseId) for url in urls]  # Create processing tasks
+    callback_signature = aggregate_results.s(responseId=responseId, keywords=keywords) # Create callback task
     chord(subtask_signatures)(callback_signature) # Process in parallel, then callback after all completed
     
-    return jsonify({"task_id": task_id}), 202
+    return jsonify({"responseId": responseId}), 202
 
 
 
 # Celery task to process URL
 @celery.task
-def process_data(url, keywords, task_id):
+def process_data(url, keywords, responseId):
 
     result = process_url(url, keywords)
     
     if result:
-        redis_conn.hset(f"results:{task_id}", url, result) # Store the results using Redis
+        redis_conn.hset(f"results:{responseId}", url, result) # Store the results using Redis
         print("URL PROCESSED:", result)
 
 
 
 # Celery task to aggregate results
 @celery.task
-def aggregate_results(results, task_id=None, keywords=None):
+def aggregate_results(results, responseId, keywords):
 
     output_json = []
-    all_results = redis_conn.hgetall(f"results:{task_id}")
+    all_results = redis_conn.hgetall(f"results:{responseId}")
     decoded_results = {key.decode('utf-8'): json.loads(value.decode('utf-8').replace("'", '"')) for key, value in all_results.items()}
 
     for url, result in decoded_results.items():
@@ -85,19 +85,19 @@ def aggregate_results(results, task_id=None, keywords=None):
     header_dict["headers"] = keywords
     output_json.insert(1, header_dict)
 
-    print("THIS IS THE TASK ID", task_id)
+    print("THIS IS THE RESPONSEID", responseId)
 
-    redis_conn.set(f"aggregated_results:{task_id}", json.dumps(output_json)) # Store aggregated result in Redis
-    print("RESULTS AGGREGATED:", json.loads(redis_conn.get(f"aggregated_results:{task_id}").decode('utf-8')))
+    redis_conn.set(f"aggregated_results:{responseId}", json.dumps(output_json)) # Store aggregated result in Redis
+    print("RESULTS AGGREGATED:", json.loads(redis_conn.get(f"aggregated_results:{responseId}").decode('utf-8')))
 
 
 
 @app.route('/reply_result')
 def reply_result():
-    task_id = request.args.get('responseId')
-    print("THIS IS THE TASK ID", task_id)
+    responseId = request.args.get('responseId')
+    print("THIS IS THE RESPONSEID", responseId)
     
-    results = redis_conn.get(f"aggregated_results:{task_id}")
+    results = redis_conn.get(f"aggregated_results:{responseId}")
     print("THESE ARE THE RESULTS", results)
 
     if results:
