@@ -1,5 +1,6 @@
 from flask import request, jsonify, Flask, g
 from celery import Celery, chord
+from celery.signals import task_success
 import os
 import json
 import redis
@@ -23,6 +24,29 @@ app.config['CELERY_RESULT_BACKEND'] = os.getenv("REDIS_URL")
 celery = Celery(__name__, broker=app.config['CELERY_BROKER_URL'])
 celery.conf.update(app.config)  # Update Celery config with Flask app config
 
+
+
+# Flask route to receive POST and start tasks
+@app.route('/receive_data', methods=['POST'])
+def receive_data():
+    data = request.get_json()
+    task_id = str(uuid.uuid4())  # Generate unique task ID
+    
+    print("DATA RECEIVED:\n", data)
+    link = data['siteUrl']
+    tags = data['tags']
+    keywords = data['keywords']
+
+    urls = product_search(tags, link)
+
+    subtask_signatures = [process_data.s(url, keywords, task_id) for url in urls]  # Create processing tasks
+    callback_signature = aggregate_results.s(task_id=task_id, keywords=keywords) # Create callback task
+    chord(subtask_signatures)(callback_signature) # Process in parallel, then callback after all completed
+    
+    return jsonify({"task_id": task_id}), 202
+
+
+
 # Celery task to process URL
 @celery.task
 def process_data(url, keywords, task_id):
@@ -32,6 +56,8 @@ def process_data(url, keywords, task_id):
     if result:
         redis_conn.hset(f"results:{task_id}", url, result) # Store the results using Redis
         print("URL PROCESSED:", result)
+
+
 
 # Celery task to aggregate results
 @celery.task
@@ -59,38 +85,25 @@ def aggregate_results(results, task_id=None, keywords=None):
     header_dict["headers"] = keywords
     output_json.insert(1, header_dict)
 
-    redis_conn.set("my_key", json.dumps(output_json)) # Store aggregated result in Redis
+    redis_conn.set(f"aggregated_results:{task_id}", json.dumps(output_json)) # Store aggregated result in Redis
     print("RESULTS AGGREGATED:", output_json)
 
-# Flask route to receive POST and start tasks
-@app.route('/receive_data', methods=['POST'])
-def receive_data():
-    data = request.get_json()
-    task_id = str(uuid.uuid4())  # Generate unique task ID
-    
-    print("DATA RECEIVED:\n", data)
-    link = data['siteUrl']
-    tags = data['tags']
-    keywords = data['keywords']
 
-    urls = product_search(tags, link)
 
-    subtask_signatures = [process_data.s(url, keywords, task_id) for url in urls]  # Create processing tasks
-    callback_signature = aggregate_results.s(task_id=task_id, keywords=keywords) # Create callback task
-    chord(subtask_signatures)(callback_signature) # Process in parallel, then callback after all completed
-    
-    return jsonify({"task_id": task_id}), 202
-
-@app.route('/reply_result', methods=['POST'])
+@app.route('/reply_result')
 def reply_result():
+    task_id = request.args.get('responseId')
     
-    results = redis_conn.get('my_key')
+    results = redis_conn.get(f"aggregated_results:{task_id}")
 
     if results:
         print("SENDING RESULTS:\n", results)
         return json.loads(results.decode('utf-8'))
     else:
-        return jsonify({"message": "No result available."}), 202
+        print("NO RESULTS AVAILABLE")
+        return '', 200
+
+
 
 
 if __name__ == '__main__':
