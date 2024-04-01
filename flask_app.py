@@ -88,7 +88,7 @@ def aggregate_results(results, responseId, keywords):
     print("THIS IS THE RESPONSEID", responseId)
 
     redis_conn.set("my_key", json.dumps(output_json)) # Store aggregated result in Redis
-    print("RESULTS AGGREGATED:", json.loads(redis_conn.get(responseId).decode('utf-8')))
+    print("RESULTS AGGREGATED:", json.loads(redis_conn.get("my_key").decode('utf-8')))
 
 
 
