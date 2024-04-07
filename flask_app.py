@@ -40,9 +40,10 @@ def receive_data():
     urls = product_search(tags, link)
     
     keywords = []
-    if "lovebonito" in urls:
+    if "lovebonito" in link:
         keywords.append("Price")
-        keywords.append("Name")
+        keywords.append("Product Type")
+        keywords.append("Color")
         keywords.append("Details")
 
     subtask_signatures = [process_data.s(url, keywords, responseId) for url in urls]  # Create processing tasks
