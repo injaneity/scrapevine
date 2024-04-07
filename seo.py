@@ -7,14 +7,16 @@ def product_search(query, site):
     
     search_url = "https://www.googleapis.com/customsearch/v1"
     webpage_urls = []
-    for start_index in range(1, 6):
+    num_results_per_page = 10
+    for page_num in range(0, 2):
+        start_index = (page_num * num_results_per_page) + 1
         params = {
             'q': f"{query} site:{site}",
             'cx': os.getenv("PSE_ID"),
             'searchType': 'image',
             'key': os.getenv("PSE_API"),
             'start': start_index,
-            'num': 1
+            'num': num_results_per_page
         }
         response = requests.get(search_url, params=params)
         result = ""
