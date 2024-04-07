@@ -7,8 +7,8 @@ def product_search(query, site):
     
     search_url = "https://www.googleapis.com/customsearch/v1"
     webpage_urls = []
-    num_results_per_page = 10
-    for page_num in range(0, 3):
+    num_results_per_page = 5
+    for page_num in range(0, 1):
         start_index = (page_num * num_results_per_page) + 1
         params = {
             'q': f"{query} site:{site}",
