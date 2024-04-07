@@ -35,9 +35,15 @@ def receive_data():
     print("DATA RECEIVED:\n", data)
     link = data['siteUrl']
     tags = data['tags']
-    keywords = data['keywords']
+    # keywords = data['keywords']
 
     urls = product_search(tags, link)
+    
+    keywords = []
+    if "lovebonito" in urls:
+        keywords.append("Price")
+        keywords.append("Name")
+        keywords.append("Details")
 
     subtask_signatures = [process_data.s(url, keywords, responseId) for url in urls]  # Create processing tasks
     callback_signature = aggregate_results.s(responseId=responseId, keywords=keywords) # Create callback task
