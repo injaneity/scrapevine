@@ -45,6 +45,11 @@ def receive_data():
         keywords.append("Product Type")
         keywords.append("Color")
         keywords.append("Details")
+    if "zara" in link:
+        keywords.append("Price")
+        keywords.append("Product Type")
+        keywords.append("Color")
+        keywords.append("Details")
 
     subtask_signatures = [process_data.s(url, keywords, responseId) for url in urls]  # Create processing tasks
     callback_signature = aggregate_results.s(responseId=responseId, keywords=keywords) # Create callback task
