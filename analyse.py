@@ -25,7 +25,6 @@ def analyse_html(data, keywords):
     {"role": "user",
     "content": f"{data}"},
     ],
-    max_tokens = 400,
     temperature = 0,
     top_p = 0,
     )
@@ -45,11 +44,11 @@ def analyse_trend(data):
     Do not provide comment on the URLs listed.
     Do not provide comment on the highest, lowest, and average price.
     Your analysis should be comprehensive, including explanation of data and detailed potential insights.
-    The output must start with: 'Brief Analysis:', must be in plain text (do not use newline characters), and must use a maximum of 400 tokens."""},
+    The output must start with: 'Brief Analysis:', must be in plain text (do not use newline characters), and can only be a maximum length of 300 tokens."""},
     {"role": "user",
     "content": f"{data}"},
     ],
-    max_tokens = 400,
+    max_tokens = 300,
     temperature = 0,
     top_p = 0,
     )

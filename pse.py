@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-def product_search(query, site):
+def product_search(tags, link):
     
     search_url = "https://www.googleapis.com/customsearch/v1"
     webpage_urls = []
@@ -11,7 +11,7 @@ def product_search(query, site):
     for page_num in range(0, 1):
         start_index = (page_num * num_results_per_page) + 1
         params = {
-            'q': f"{query} site:{site}",
+            'q': f"{tags} link:{link}",
             'cx': os.getenv("PSE_ID"),
             'searchType': 'image',
             'key': os.getenv("PSE_API"),

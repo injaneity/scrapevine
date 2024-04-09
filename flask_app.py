@@ -5,7 +5,7 @@ import os
 import json
 import redis
 from multi import process_url
-from seo import product_search
+from pse import product_search
 import uuid
 from analyse import analyse_trend, analyse_price
 
