@@ -45,7 +45,7 @@ def receive_data():
         keywords.append("Product Type")
         keywords.append("Color")
         keywords.append("Details")
-    if "zara" in link:
+    if "uniqlo" in link:
         keywords.append("Price")
         keywords.append("Product Type")
         keywords.append("Color")
