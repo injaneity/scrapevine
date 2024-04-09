@@ -11,7 +11,7 @@ def product_search(tags, link):
     for page_num in range(0, 1):
         start_index = (page_num * num_results_per_page) + 1
         params = {
-            'q': f"{tags} link:{link}",
+            'q': f"{tags} site:{link}",
             'cx': os.getenv("PSE_ID"),
             'searchType': 'image',
             'key': os.getenv("PSE_API"),
