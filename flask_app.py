@@ -40,7 +40,7 @@ def receive_data():
     urls = product_search(tags, link)
     
     keywords = []
-    if "lovebonito" in link or "pazzion" in link:
+    if "lovebonito" in link or "pazzion" in link or "hm" in link:
         keywords.append("Price")
         keywords.append("Product Type")
         keywords.append("Color")
