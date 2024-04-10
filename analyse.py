@@ -18,13 +18,16 @@ def analyse_html(data, keywords):
     {"role": "system",
     "content":
     f"""Your role is to analyse html from webpages containing clothing products, 
-            and output the necessary characteristics to fill up the following format: {keyword_dict}.
-            Each characteristic should take into account all the information provided, not just the corresponding key-value pairs.
-            For price, output only the numeric value. If there are multiple prices, output the median price.
-            If unable to provide a characteristic, do not output any explanation - leave that characteristic blank and output the entire dictionary as per normal."""},
+    and output the necessary characteristics to fill up the following format: {keyword_dict}.
+    Each characteristic should be human-readable, and take into account all provided information, not just the corresponding key-value pairs.
+    For price, output only the numeric value. If there are multiple prices, output the median price.
+    Try your best to fill up all characteristics, and infer if necessary. If completely unable to provide a characteristic, 
+    do not output any explanation - leave that characteristic blank and output the entire dictionary as per normal.
+    Keep each characteristic as concise as possible. The final output should be less than 75 tokens in length."""},
     {"role": "user",
     "content": f"{data}"},
     ],
+    max_tokens = 75,
     temperature = 0,
     top_p = 0,
     )
@@ -44,11 +47,11 @@ def analyse_trend(data):
     Do not provide comment on the URLs listed.
     Do not provide comment on the highest, lowest, and average price.
     Your analysis should be comprehensive, including explanation of data and detailed potential insights.
-    The output must start with: 'Brief Analysis:', must be in plain text (do not use newline characters), and can only be a maximum length of 300 tokens."""},
+    The final output must start with: 'Brief Analysis:', must be in plain text (do not use newline characters), and should be less than 175 tokens in length"""},
     {"role": "user",
     "content": f"{data}"},
     ],
-    max_tokens = 300,
+    max_tokens = 175,
     temperature = 0,
     top_p = 0,
     )
