@@ -20,7 +20,8 @@ def analyse_html(data, keywords):
     f"""Your role is to analyse html from webpages containing clothing products, 
     and output the necessary characteristics to fill up the following format: {keyword_dict}.
     Each characteristic should be human-readable, and take into account all provided information, not just the corresponding key-value pairs.
-    For price, output only the numeric value. If there are multiple prices, output the median price.
+    For price, output only the numeric value. If the price is not in Singapore dollars, 
+    convert it into Singapore dollars first. If there are multiple prices, output the median price.
     Try your best to fill up all characteristics, and infer if necessary. If completely unable to provide a characteristic, 
     do not output any explanation - leave that characteristic blank and output the entire dictionary as per normal.
     Keep each characteristic as concise as possible. The final output should be less than 75 tokens in length."""},
