@@ -40,11 +40,16 @@ def receive_data():
     urls = product_search(tags, link)
     
     keywords = []
-    if "lovebonito" in link or "pazzion" in link or "hm" in link:
+    if "lovebonito" in link:
         keywords.append("Price")
         keywords.append("Product Type")
         keywords.append("Color")
         keywords.append("Details")
+    elif "pazzion" in link:
+        keywords.append("Price")
+        keywords.append("Product Type")
+        keywords.append("Color")
+        keywords.append("Description")
 
     subtask_signatures = [process_data.s(url, keywords, responseId) for url in urls]  # Create processing tasks
     callback_signature = aggregate_results.s(responseId=responseId, keywords=keywords) # Create callback task
