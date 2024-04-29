@@ -38,9 +38,9 @@ def product_search(tags, link):
 
     # Printing out duplicates and total count of duplicates removed
     print("DUPLICATE LINKS:\n", duplicates)
-    print("NO OF DUPLICATE: ", len(duplicates))
+    print("NO OF DUPLICATE:", len(duplicates))
     
     print("UNIQUE LINKS:\n", unique_webpage_urls)
-    print("NO OF UNIQUE: ", len(unique_webpage_urls))
+    print("NO OF UNIQUE:", len(unique_webpage_urls))
 
     return unique_webpage_urls
