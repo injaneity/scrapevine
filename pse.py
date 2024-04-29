@@ -37,10 +37,10 @@ def product_search(tags, link):
             unique_webpage_urls.append(url)
 
     # Printing out duplicates and total count of duplicates removed
-    print("DUPLICATE LINKS:\n" + duplicates)
-    print("NO OF DUPLICATE: " + len(duplicates))
+    print("DUPLICATE LINKS:\n" + str(duplicates))
+    print("NO OF DUPLICATE: " + str(len(duplicates)))
     
-    print("UNIQUE LINKS:\n" + unique_webpage_urls)
-    print("NO OF UNIQUE: " + len(unique_webpage_urls))
+    print("UNIQUE LINKS:\n" + str(unique_webpage_urls))
+    print("NO OF UNIQUE: " + str(len(unique_webpage_urls)))
 
     return unique_webpage_urls
