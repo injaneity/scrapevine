@@ -8,7 +8,7 @@ def product_search(tags, link):
     search_url = "https://www.googleapis.com/customsearch/v1"
     webpage_urls = []
     num_results_per_page = 5
-    for page_num in range(0, 1):
+    for page_num in range(0, 2):
         start_index = (page_num * num_results_per_page) + 1
         params = {
             'q': f"{tags} site:{link}",
@@ -31,7 +31,7 @@ def product_search(tags, link):
 
         # Extracting webpage URLs where images are found
         webpage_urls.extend([item['image']['contextLink'] for item in result.get('items', [])])
-        webpage_urls = list(dict.fromkeys(webpage_urls)) # Remove duplicate links
+        #webpage_urls = list(dict.fromkeys(webpage_urls)) # Remove duplicate links
 
         # Check if there are no more results
         if 'nextPage' not in result.get('queries', {}):
