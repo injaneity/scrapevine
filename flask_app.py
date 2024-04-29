@@ -10,8 +10,8 @@ import uuid
 from analyse import analyse_trend, analyse_price
 
 # Configure Redis settings
-redis_conn = redis.from_url(os.getenv("REDIS_URL"))
-
+redis_url = os.getenv("REDIS_URL") + '?ssl_cert_reqs=CERT_REQUIRED'
+redis_conn = redis.from_url(redis_url, ssl_cert_reqs='required')
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -33,7 +33,7 @@ def receive_data():
     data = request.get_json()
     responseId = str(uuid.uuid4())  # Generate unique task ID
     
-    print("DATA RECEIVED:\n", data)
+    print("DATA RECEIVED:\n" + data)
     link = data['siteUrl']
     tags = data['tags']
     # keywords = data['keywords']
@@ -68,7 +68,7 @@ def process_data(url, keywords, responseId):
     
     if result:
         redis_conn.hset(f"results:{responseId}", url, result) # Store the results using Redis
-        print("URL PROCESSED:", result)
+        print("URL PROCESSED:" + result)
 
 
 
@@ -98,10 +98,10 @@ def aggregate_results(results, responseId, keywords):
     header_dict["headers"] = keywords
     output_json.insert(1, header_dict)
 
-    print("THIS IS THE RESPONSEID", responseId)
+    print("THIS IS THE RESPONSEID" + responseId)
 
     redis_conn.set("my_key", json.dumps(output_json)) # Store aggregated result in Redis
-    print("RESULTS AGGREGATED:", json.loads(redis_conn.get("my_key").decode('utf-8')))
+    print("RESULTS AGGREGATED:" + json.loads(redis_conn.get("my_key").decode('utf-8')))
 
 
 
@@ -116,7 +116,7 @@ def reply_result():
     results = redis_conn.get("my_key")
 
     if results:
-        print("SENDING RESULTS:\n", results)
+        print("SENDING RESULTS:\n" + results)
         return json.loads(results.decode('utf-8'))
     else:
         print("NO RESULTS AVAILABLE")
