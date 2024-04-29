@@ -8,7 +8,7 @@ def product_search(tags, link):
     all_webpage_urls = []  # List to hold all found URLs, including duplicates
     unique_webpage_urls = []  # List to hold unique URLs
     num_results_per_page = 5
-    for page_num in range(0, 2):
+    for page_num in range(0, 1):
         start_index = (page_num * num_results_per_page) + 1
         params = {
             'q': f"{tags} site:{link}",
