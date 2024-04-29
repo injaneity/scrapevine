@@ -10,14 +10,7 @@ import uuid
 from analyse import analyse_trend, analyse_price
 
 # Configure Redis settings
-redis_url = os.getenv("REDIS_URL")
-
-# If the Redis URL starts with 'rediss://', it means SSL is used.
-# You should specify SSL parameters like ssl_cert_reqs.
-if redis_url.startswith('rediss://'):
-    redis_conn = redis.from_url(redis_url, ssl_cert_reqs='optional')
-else:
-    redis_conn = redis.from_url(redis_url)
+redis_conn = redis.from_url(os.getenv("REDIS_URL"))
 
 
 # Initialize Flask app
