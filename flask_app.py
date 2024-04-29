@@ -11,7 +11,7 @@ from analyse import analyse_trend, analyse_price
 
 # Configure Redis settings
 redis_url = os.getenv("REDIS_URL") + '?ssl_cert_reqs=CERT_REQUIRED'
-redis_conn = redis.from_url(redis_url, ssl_cert_reqs='required')
+redis_conn = redis.from_url(redis_url)
 
 # Initialize Flask app
 app = Flask(__name__)
