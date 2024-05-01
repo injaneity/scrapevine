@@ -79,8 +79,12 @@ def aggregate_results(results, responseId, keywords):
     decoded_results = {key.decode('utf-8'): json.loads(value.decode('utf-8').replace("'", '"')) for key, value in all_results.items()}
 
     for url, result in decoded_results.items():
-        result["url"] = url
-        output_json.append(result) # Add a dictionary for each product
+        # Check if any value in the result dictionary is not an empty string
+        if all(value == '' for value in result.values()):
+            print("BAD LINK: " + url)
+        else:
+            result["url"] = url
+            output_json.append(result) # Add a dictionary for each product
 
     #Add a dictionary containing analysis of entire dataset
     analysis_dict = {}
