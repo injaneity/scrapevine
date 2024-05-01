@@ -20,7 +20,7 @@ def product_search(tags, link):
     search_url = "https://www.googleapis.com/customsearch/v1"
     all_urls = []  # List to hold all found URLs
     num_results_per_page = 5
-    for page_num in range(0, 4):
+    for page_num in range(0, 8):
         start_index = (page_num * num_results_per_page) + 1
         params = {
             'q': f"{tags} site:{link}",
@@ -51,6 +51,10 @@ def product_search(tags, link):
 
     print("NO OF BAD LINKS: " + str(len(bad_urls)))
     print("NO OF GOOD LINKS: " + str(len(good_urls)))
+
+    # Trim good_urls if necessary
+    if len(good_urls) > 30:
+        good_urls = good_urls[:30]
 
     return good_urls
 
