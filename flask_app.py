@@ -119,6 +119,7 @@ def reply_result():
 
     if results:
         print("SENDING RESULTS:\n" + str(results))
+        redis_conn.delete("my_key")
         return json.loads(results.decode('utf-8'))
     else:
         print("NO RESULTS AVAILABLE")

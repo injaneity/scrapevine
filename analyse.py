@@ -48,7 +48,7 @@ def analyse_trend(data):
     Do not provide comment on the URLs listed.
     Do not provide comment on the highest, lowest, and average price.
     Your analysis should be comprehensive, including explanation of data and detailed potential insights.
-    The final output must be in plain text (do not use newline characters), and should be around 130 tokens in length. Do not use more than 150 tokens."""},
+    The final output must be in plain text (do not use newline characters), and do not use more than 150 tokens."""},
     {"role": "user",
     "content": f"{data}"},
     ],
