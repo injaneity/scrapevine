@@ -1,5 +1,5 @@
 beautifulsoup4==4.12.3
-celery==5.3.6
+celery==5.4.0
 Flask==3.0.2
 openai==1.14.2
 python-dotenv==1.0.1
