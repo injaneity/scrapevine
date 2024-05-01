@@ -83,7 +83,7 @@ def aggregate_results(results, responseId, keywords):
         if all(value == '' for value in result.values()):
             print("BAD LINK: " + url)
         else:
-            result["url"] = url
+            result["URL"] = url
             output_json.append(result) # Add a dictionary for each product
 
     #Add a dictionary containing analysis of entire dataset
@@ -96,7 +96,7 @@ def aggregate_results(results, responseId, keywords):
 
     # Add a dictionary containing necessary headers
     header_dict = {}
-    keywords.append("url")
+    keywords.append("URL")
     header_dict["headers"] = keywords
     output_json.insert(1, header_dict)
 
