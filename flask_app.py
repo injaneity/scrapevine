@@ -66,7 +66,7 @@ def process_data(url, keywords, responseId):
     
     if result:
         redis_conn.hset(f"results:{responseId}", url, result) # Store the results using Redis
-        print("URL PROCESSED:" + str(result))
+        print("URL PROCESSED:\n" + str(result))
 
 
 
@@ -96,10 +96,10 @@ def aggregate_results(results, responseId, keywords):
     header_dict["headers"] = keywords
     output_json.insert(1, header_dict)
 
-    print("THIS IS THE RESPONSEID" + responseId)
+    #print("THIS IS THE RESPONSEID" + responseId)
 
     redis_conn.set("my_key", json.dumps(output_json)) # Store aggregated result in Redis
-    print("RESULTS AGGREGATED:" + str(json.loads(redis_conn.get("my_key").decode('utf-8'))))
+    print("RESULTS AGGREGATED:\n" + str(json.loads(redis_conn.get("my_key").decode('utf-8'))))
 
 
 
