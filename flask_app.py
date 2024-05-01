@@ -11,7 +11,7 @@ from analyse import analyse_trend, analyse_price
 from urllib.parse import urlparse
 
 # Configure Redis settings
-redis_url = urlparse(os.environ.get("REDIS_URL")) #+ '?ssl_cert_reqs=CERT_REQUIRED'
+redis_url = urlparse(os.environ.get("REDIS_URL"))
 redis_conn = redis.Redis(host=redis_url.hostname, port=redis_url.port, password=redis_url.password, ssl=True, ssl_cert_reqs=None)
 
 # Initialize Flask app
@@ -20,7 +20,7 @@ app.json.sort_keys = False
 
 # Configure Celery settings
 app.config['CELERY_BROKER_URL'] = os.getenv('CLOUDAMQP_URL')
-app.config['CELERY_RESULT_BACKEND'] = os.getenv("REDIS_URL")
+app.config['CELERY_RESULT_BACKEND'] = os.getenv("REDIS_URL" + '?ssl_cert_reqs=CERT_NONE')
 
 # Initialize Celery
 celery = Celery(__name__, broker=app.config['CELERY_BROKER_URL'])
