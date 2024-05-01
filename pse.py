@@ -18,7 +18,7 @@ NA_urls = [
 
 def product_search(tags, link):
     search_url = "https://www.googleapis.com/customsearch/v1"
-    all_urls = []  # List to hold all found URLs, including duplicates
+    all_urls = []  # List to hold all found URLs
     num_results_per_page = 5
     for page_num in range(0, 4):
         start_index = (page_num * num_results_per_page) + 1
@@ -49,10 +49,8 @@ def product_search(tags, link):
         else:
             good_urls.append(url)
 
-    # Printing out duplicates and total count of duplicates removed
     print("NO OF BAD LINKS: " + str(len(bad_urls)))
     print("NO OF GOOD LINKS: " + str(len(good_urls)))
-    print("GOOD LINKS:\n" + str(good_urls))
 
     return good_urls
 
