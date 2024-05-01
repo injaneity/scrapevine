@@ -8,10 +8,11 @@ from multi import process_url
 from pse import product_search
 import uuid
 from analyse import analyse_trend, analyse_price
+from urllib.parse import urlparse
 
 # Configure Redis settings
-redis_url = os.getenv("REDIS_URL") #+ '?ssl_cert_reqs=CERT_REQUIRED'
-redis_conn = redis.from_url(redis_url)
+redis_url = urlparse(os.environ.get("REDIS_URL")) #+ '?ssl_cert_reqs=CERT_REQUIRED'
+redis_conn = redis.Redis(host=redis_url.hostname, port=redis_url.port, password=redis_url.password, ssl=True, ssl_cert_reqs=None)
 
 # Initialize Flask app
 app = Flask(__name__)
