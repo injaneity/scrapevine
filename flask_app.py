@@ -3,6 +3,7 @@ from celery import Celery, chord
 from celery.signals import task_success
 import os
 import json
+import re
 import redis
 from multi import process_url
 from pse import product_search
@@ -39,10 +40,10 @@ def receive_data():
     rawlink = data['siteUrl']
     rawtags = data['tags']
 
-    # Transform tags into a list of individual words
-    tags = []
-    for tag in rawtags:
-        tags.extend(tag.split())
+    # Transform rawtags string into a list of individual words
+    tags = re.split(r'[^a-zA-Z]+', rawtags)
+    # Filter out any empty strings that may result from splitting
+    tags = list(filter(None, tags))
     print(tags)
     
     # Determine the appropriate keywords based on the link
