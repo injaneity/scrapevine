@@ -13,7 +13,7 @@ def analyse_html(data, keywords):
         keyword_dict[keyword] = f"insert {keyword}"
 
     analysis = client.chat.completions.create(
-    model = "gpt-4-0125-preview",
+    model = "gpt-4o",
     messages=[
     {"role": "system",
     "content":
@@ -37,7 +37,7 @@ def analyse_html(data, keywords):
 def analyse_trend(data):
 
     analysis = client.chat.completions.create(
-    model = "gpt-4-0125-preview",
+    model = "gpt-4o",
     messages=[
     {"role": "system",
     "content":
