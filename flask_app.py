@@ -12,6 +12,10 @@ from urllib.parse import urlparse
 
 
 
+# Load keyword map from JSON file
+with open('map.json', 'r') as f:
+    map = json.load(f)
+
 # Configure Redis settings
 redis_url = urlparse(os.environ.get("REDIS_URL"))
 redis_conn = redis.Redis(host=redis_url.hostname, port=redis_url.port, password=redis_url.password, ssl=True, ssl_cert_reqs=None)
@@ -32,30 +36,31 @@ def receive_data():
     responseId = str(uuid.uuid4())  # Generate unique task ID
     
     print("DATA RECEIVED:\n" + str(data))
-    link = data['siteUrl']
+    rawlink = data['siteUrl']
     rawtags = data['tags']
-    # keywords = data['keywords']
 
     # Transform tags into a list of individual words
     tags = []
     for tag in rawtags:
         tags.extend(tag.split())
     print(tags)
-
-    urls = product_search(tags, link)
-    
-    # Dictionary mapping site keywords to their respective keywords
-    keyword_map = {
-        "lovebonito": ["Price", "Product Type", "Color", "Details"],
-        "pazzion": ["Price", "Product Type", "Color", "Description"]
-    }
     
     # Determine the appropriate keywords based on the link
     keywords = []
-    for site, site_keywords in keyword_map.items():
-        if site in link.lower():
-            keywords = site_keywords
+    link = None
+    match_found = False
+    for site, site_data in map.items():
+        if site in rawlink.lower():
+            link = site_data["link"]  # Update link to the one in map
+            keywords = site_data["keywords"]
+            match_found = True
             break
+
+    if not match_found:
+        print(f"NO MATCHING WEBSITE FOR {rawlink}")
+        return jsonify({"error": f"NO MATCHING WEBSITE FOR {rawlink}"}), 400
+
+    urls = product_search(tags, link)
 
     subtask_signatures = [process_data.s(url, keywords, responseId) for url in urls]  # Create processing tasks
     callback_signature = aggregate_results.s(responseId=responseId, keywords=keywords) # Create callback task
