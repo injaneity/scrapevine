@@ -40,6 +40,7 @@ def receive_data():
     tags = []
     for tag in rawtags:
         tags.extend(tag.split())
+    print(tags)
 
     urls = product_search(tags, link)
     
