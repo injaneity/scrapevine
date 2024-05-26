@@ -20,7 +20,7 @@ def product_search(tags, link):
     search_url = "https://www.googleapis.com/customsearch/v1"
     all_urls = []  # List to hold all found URLs
     num_results_per_page = 5
-    for page_num in range(0, 1):
+    for page_num in range(0, 2):
         start_index = (page_num * num_results_per_page) + 1
         params = {
             'q': f"{tags} site:{link}",

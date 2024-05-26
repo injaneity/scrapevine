@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
 def extract_html(url):
-    print(f"Extracting from {url}")
+    print(f"EXTRACTING FROM {url}")
 
     try:
         # Setting up Chrome WebDriver with options
