@@ -35,9 +35,31 @@ celery.conf.update(
 
 
 
-# Flask route to receive POST and start tasks
+# Function to scale dynos
+def scale_dynos(dyno_type, quantity):
+    url = f"https://api.heroku.com/apps/{os.getenv('HEROKU_APP_NAME')}/formation/{dyno_type}"
+    headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/vnd.heroku+json; version=3',
+        'Authorization': f'Bearer {os.getenv('HEROKU_API_KEY')}'
+    }
+    data = {
+        "quantity": quantity
+    }
+    response = requests.patch(url, headers=headers, json=data)
+    if response.status_code == 200:
+        print(f"SCALED {dyno_type} DYNOS TO {quantity}")
+    else:
+        print(f"FAILED TO SCALE DYNOS: {response.content}")
+
+
+
+# Flask route to receive user input
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
+    # Scale up dynos
+    scale_dynos('worker', 5)
+
     data = request.get_json()
     responseId = str(uuid.uuid4())  # Generate unique task ID
     
@@ -123,9 +145,13 @@ def aggregate_results(results, responseId, keywords):
     redis_conn.set("my_key", json.dumps(output_json)) # Store aggregated result in Redis
     print("RESULTS AGGREGATED:\n" + str(json.loads(redis_conn.get("my_key").decode('utf-8'))))
 
+    # Scale down dynos after tasks complete
+    scale_dynos('worker', 0)
 
 
-@app.route('/reply_result')
+
+# Flask route to reply with results
+@app.route('/reply_result', methods=['GET'])
 def reply_result():
     # responseId = request.args.get('responseId')
     # print("THIS IS THE RESPONSEID", responseId)
