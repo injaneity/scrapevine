@@ -27,6 +27,11 @@ app.json.sort_keys = False
 
 # Initialize Celery
 celery = Celery(__name__, backend=os.getenv("REDIS_URL") + '?ssl_cert_reqs=CERT_NONE', broker=os.getenv('CLOUDAMQP_URL'))
+celery.conf.update(
+    worker_concurrency=1,  # Ensure each worker handles one task at a time
+    task_acks_late=True,  # Ensure tasks are acknowledged after completion
+    worker_prefetch_multiplier=1  # Prevent multiple tasks from being assigned to the same worker
+)
 
 
 
