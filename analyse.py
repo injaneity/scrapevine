@@ -41,18 +41,19 @@ def analyse_trend(data):
     messages=[
     {"role": "system",
     "content":
-    """You will be given JSON that contains a list of information about clothing products in a specific market.
+    """You will be given JSON containing a list of information about clothing products in a specific market.
     For example, such information can include the price of a product, its colour, or the type of clothing it is.
     Your role is to understand this information and conduct market analysis. Your analysis should be useful in helping businesspeople enter the given market.
     Output any trends in the data that you find. For example, such trends can include finding which characteristic appears most frequently across the list of products provided.
-    Do not provide comment on the URLs listed.
-    Do not provide comment on the highest, lowest, and average price.
-    Your analysis should be comprehensive, including explanation of data and detailed potential insights.
-    The final output must be in plain text (do not use newline characters), and do not use more than 150 tokens."""},
+    Your analysis should be comprehensive, including explanation of data and detailed business insights.
+    Do not comment on the URLs listed.
+    Do not comment on the highest, lowest, and average price.
+    The final output must be in plain text (do not use newline characters, and do not use any special formatting like bolding and listing).
+    Do not use more than 90 words."""},
     {"role": "user",
     "content": f"{data}"},
     ],
-    max_tokens = 150,
+    max_tokens = 200,
     temperature = 0,
     top_p = 0,
     )
