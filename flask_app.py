@@ -2,6 +2,7 @@ from flask import request, jsonify, Flask, g
 from celery import Celery, chord
 from celery.signals import task_success
 import os
+import requests
 import json
 import re
 import redis
