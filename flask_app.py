@@ -47,9 +47,9 @@ def scale_dynos(dyno_type, quantity):
     data = {"quantity": quantity}
     response = requests.patch(url, headers=headers, json=data)
     if response.status_code == 200:
-        print(f"Scaled {dyno_type} dynos to {quantity}")
+        print(f"SCALING {dyno_type} DYNOS TO {quantity}")
     else:
-        print(f"Failed to scale dynos: {response.content}")
+        print(f"FAILED TO SCALE DYNOS: {response.content}")
 
 
 
@@ -108,7 +108,7 @@ def process_data(url, keywords, responseId):
     
     if result:
         redis_conn.hset(f"results:{responseId}", url, result)
-        print("URL PROCESSED:\n" + str(result))
+        print(f"URL PROCESSED ({url}):\n" + str(result))
 
 
 
@@ -138,6 +138,7 @@ def aggregate_results(results, responseId, keywords):
     header_dict["headers"] = keywords
     output_json.insert(1, header_dict)
 
+    # Store the final result in Redis
     redis_conn.set(f"results:{responseId}:final", json.dumps(output_json))
     print("RESULTS AGGREGATED:\n" + str(json.loads(redis_conn.get(f"results:{responseId}:final").decode('utf-8'))))
 
@@ -145,9 +146,11 @@ def aggregate_results(results, responseId, keywords):
 
 # Track active tasks using Redis
 @task_postrun.connect
-def task_postrun_handler(task_id, **kwargs):
+def task_postrun_handler(task_id, task, state, **kwargs):
     redis_conn.decr('active_tasks')
-    if int(redis_conn.get('active_tasks')) == 0:
+    active_tasks = int(redis_conn.get('active_tasks'))
+    if active_tasks == 0:
+        print("ALL TASKS COMPLETED. SCALING DOWN DYNOS.")
         scale_dynos('worker', 0)
 
 
