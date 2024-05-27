@@ -1,6 +1,4 @@
-from flask import request, jsonify, Flask, g
-from celery import Celery, chord
-from celery.signals import task_success
+from flask import request, jsonify, Flask
 import os
 import requests
 import json
@@ -11,6 +9,8 @@ from pse import product_search
 import uuid
 from analyse import analyse_trend, analyse_price
 from urllib.parse import urlparse
+from celery import Celery, chord
+from celery.signals import task_postrun
 
 
 
@@ -38,29 +38,29 @@ celery.conf.update(
 
 # Function to scale dynos
 def scale_dynos(dyno_type, quantity):
+    
     url = f"https://api.heroku.com/apps/{os.getenv('HEROKU_APP_NAME')}/formation/{dyno_type}"
     headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/vnd.heroku+json; version=3',
         'Authorization': f'Bearer {os.getenv('HEROKU_API_KEY')}'
     }
-    data = {
-        "quantity": quantity
-    }
+    data = {"quantity": quantity}
+    
     response = requests.patch(url, headers=headers, json=data)
     if response.status_code == 200:
-        print(f"SCALED {dyno_type} DYNOS TO {quantity}")
+        print(f"Scaled {dyno_type} dynos to {quantity}")
     else:
-        print(f"FAILED TO SCALE DYNOS: {response.content}")
+        print(f"Failed to scale dynos: {response.content}")
 
 
 
-# Flask route to receive user input
+# Flask route to receive POST and start tasks
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
-    # Scale up dynos
+    # Scale up dynos before processing
     scale_dynos('worker', 5)
-
+    
     data = request.get_json()
     responseId = str(uuid.uuid4())  # Generate unique task ID
     
@@ -80,20 +80,24 @@ def receive_data():
     match_found = False
     for site, site_data in map.items():
         if site in rawlink.lower():
-            link = site_data["link"]  # Update link to the one in map
+            link = site_data["link"]
             keywords = site_data["keywords"]
             match_found = True
             break
 
     if not match_found:
         print(f"NO MATCHING WEBSITE FOR {rawlink}")
+        scale_dynos('worker', 0)
         return jsonify({"error": f"NO MATCHING WEBSITE FOR {rawlink}"}), 400
 
     urls = product_search(tags, link)
+    
+    # Initialize task counter
+    redis_conn.set('active_tasks', len(urls))
 
-    subtask_signatures = [process_data.s(url, keywords, responseId) for url in urls]  # Create processing tasks
-    callback_signature = aggregate_results.s(responseId=responseId, keywords=keywords) # Create callback task
-    chord(subtask_signatures)(callback_signature) # Process in parallel, then callback after all completed
+    subtask_signatures = [process_data.s(url, keywords, responseId) for url in urls]
+    callback_signature = aggregate_results.s(responseId=responseId, keywords=keywords)
+    chord(subtask_signatures)(callback_signature)
     
     return jsonify({"responseId": responseId}), 202
 
@@ -102,32 +106,26 @@ def receive_data():
 # Celery task to process URL
 @celery.task
 def process_data(url, keywords, responseId):
-
     result = process_url(url, keywords)
     
     if result:
-        redis_conn.hset(f"results:{responseId}", url, result) # Store the results using Redis
+        redis_conn.hset(f"results:{responseId}", url, result)
         print("URL PROCESSED:\n" + str(result))
-
-
 
 # Celery task to aggregate results
 @celery.task
 def aggregate_results(results, responseId, keywords):
-
     output_json = []
     all_results = redis_conn.hgetall(f"results:{responseId}")
     decoded_results = {key.decode('utf-8'): json.loads(value.decode('utf-8').replace("'", '"')) for key, value in all_results.items()}
 
     for url, result in decoded_results.items():
-        # Check if any value in the result dictionary is not an empty string
         if all(value == '' for value in result.values()):
             print("BAD LINK: " + url)
         else:
             result["URL"] = url
-            output_json.append(result) # Add a dictionary for each product
+            output_json.append(result)
 
-    #Add a dictionary containing analysis of entire dataset
     analysis_dict = {}
     price_dict = analyse_price(output_json)
     for price in price_dict:
@@ -135,43 +133,35 @@ def aggregate_results(results, responseId, keywords):
     analysis_dict["Trend"] = analyse_trend(output_json)
     output_json.insert(0, analysis_dict)
 
-    # Add a dictionary containing necessary headers
     header_dict = {}
     keywords.append("URL")
     header_dict["headers"] = keywords
     output_json.insert(1, header_dict)
 
-    #print("THIS IS THE RESPONSEID" + responseId)
-
-    redis_conn.set("my_key", json.dumps(output_json)) # Store aggregated result in Redis
-    print("RESULTS AGGREGATED:\n" + str(json.loads(redis_conn.get("my_key").decode('utf-8'))))
-
-    # Scale down dynos after tasks complete
-    scale_dynos('worker', 0)
+    redis_conn.set(f"results:{responseId}:final", json.dumps(output_json))
+    print("RESULTS AGGREGATED:\n" + str(json.loads(redis_conn.get(f"results:{responseId}:final").decode('utf-8'))))
 
 
 
-# Flask route to reply with results
-@app.route('/reply_result', methods=['GET'])
+# Track active tasks using Redis
+@task_postrun.connect
+def task_postrun_handler(task_id, **kwargs):
+    redis_conn.decr('active_tasks')
+    if int(redis_conn.get('active_tasks')) == 0:
+        scale_dynos('worker', 0)
+
+@app.route('/reply_result')
 def reply_result():
-    # responseId = request.args.get('responseId')
-    # print("THIS IS THE RESPONSEID", responseId)
-    
-    # results = redis_conn.get(responseId)
-    # print("THESE ARE THE RESULTS", json.loads(redis_conn.get(responseId).decode('utf-8')))
-
-    results = redis_conn.get("my_key")
+    responseId = request.args.get('responseId')
+    results = redis_conn.get(f"results:{responseId}:final")
 
     if results:
         print("SENDING RESULTS:\n" + str(results))
-        redis_conn.delete("my_key")
+        redis_conn.delete(f"results:{responseId}:final")
         return json.loads(results.decode('utf-8'))
     else:
         print("NO RESULTS AVAILABLE")
-        return jsonify({"status": "processing"}), 202  # Or use a different status/message as appropriate
-
-
+        return jsonify({"status": "processing"}), 202
 
 if __name__ == '__main__':
     app.run(debug=True)
-
