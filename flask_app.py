@@ -4,6 +4,7 @@ import requests
 import json
 import re
 import redis
+import time
 from multi import process_url
 from pse import product_search
 import uuid
@@ -150,6 +151,8 @@ def task_postrun_handler(task_id, task, state, **kwargs):
     redis_conn.decr('active_tasks')
     active_tasks = int(redis_conn.get('active_tasks'))
     if active_tasks == 0:
+        # Wait to ensure results are properly stored
+        time.sleep(2)
         print("ALL TASKS COMPLETED. SCALING DOWN DYNOS.")
         scale_dynos('worker', 0)
 
