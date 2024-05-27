@@ -63,8 +63,7 @@ def receive_data():
     responseId = str(uuid.uuid4())  # Generate unique task ID
     
     print("DATA RECEIVED:\n" + str(data))
-    rawlink = data['siteUrl']
-    rawtags = data['tags']
+    rawlink, rawtags = data['siteUrl'], data['tags']
 
     # Transform rawtags string into a list of individual words
     tags = re.split(r'[^a-zA-Z]+', rawtags)
@@ -73,17 +72,11 @@ def receive_data():
     print(tags)
     
     # Determine the appropriate keywords based on the link
-    keywords = []
-    link = None
-    match_found = False
     for site, site_data in map.items():
         if site in rawlink.lower():
-            link = site_data["link"]
-            keywords = site_data["keywords"]
-            match_found = True
+            link, keywords = site_data["link"], site_data["keywords"]
             break
-
-    if not match_found:
+    else:
         print(f"NO MATCHING WEBSITE FOR {rawlink}")
         scale_dynos('worker', 0)
         return jsonify({"error": f"NO MATCHING WEBSITE FOR {rawlink}"}), 400
@@ -142,14 +135,14 @@ def aggregate_results(results, responseId, keywords):
     print("RESULTS AGGREGATED:\n" + str(json.loads(redis_conn.get("my_key").decode('utf-8'))))
 
 
-
+  
 # Track active tasks using Redis
 @task_postrun.connect
 def task_postrun_handler(task_id, task, state, **kwargs):
     redis_conn.decr('active_tasks')
     active_tasks = int(redis_conn.get('active_tasks'))
     if active_tasks == 0:
-        print("ALL TASKS COMPLETED. SCALING DOWN DYNOS.")
+        print("ALL TASKS COMPLETED.")
         scale_dynos('worker', 0)
 
 
