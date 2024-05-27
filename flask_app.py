@@ -57,7 +57,7 @@ def scale_dynos(dyno_type, quantity):
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
     # Scale up dynos before processing
-    scale_dynos('worker', 5)
+    scale_dynos('worker', 10)
     
     data = request.get_json()
     responseId = str(uuid.uuid4())  # Generate unique task ID
