@@ -38,7 +38,6 @@ celery.conf.update(
 
 # Function to scale dynos
 def scale_dynos(dyno_type, quantity):
-    
     url = f"https://api.heroku.com/apps/{os.getenv('HEROKU_APP_NAME')}/formation/{dyno_type}"
     headers = {
         'Content-Type': 'application/json',
@@ -46,7 +45,6 @@ def scale_dynos(dyno_type, quantity):
         'Authorization': f'Bearer {os.getenv('HEROKU_API_KEY')}'
     }
     data = {"quantity": quantity}
-    
     response = requests.patch(url, headers=headers, json=data)
     if response.status_code == 200:
         print(f"Scaled {dyno_type} dynos to {quantity}")
@@ -55,7 +53,7 @@ def scale_dynos(dyno_type, quantity):
 
 
 
-# Flask route to receive POST and start tasks
+# Flask route to start web scraping
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
     # Scale up dynos before processing
@@ -93,7 +91,7 @@ def receive_data():
     urls = product_search(tags, link)
     
     # Initialize task counter
-    redis_conn.set('active_tasks', len(urls))
+    redis_conn.set('active_tasks', len(urls) + 1)  # +1 for the aggregate_results task
 
     subtask_signatures = [process_data.s(url, keywords, responseId) for url in urls]
     callback_signature = aggregate_results.s(responseId=responseId, keywords=keywords)
@@ -111,6 +109,8 @@ def process_data(url, keywords, responseId):
     if result:
         redis_conn.hset(f"results:{responseId}", url, result)
         print("URL PROCESSED:\n" + str(result))
+
+
 
 # Celery task to aggregate results
 @celery.task
@@ -150,7 +150,10 @@ def task_postrun_handler(task_id, **kwargs):
     if int(redis_conn.get('active_tasks')) == 0:
         scale_dynos('worker', 0)
 
-@app.route('/reply_result')
+
+
+# Flask route to reply with results
+@app.route('/reply_result', methods=['GET'])
 def reply_result():
     responseId = request.args.get('responseId')
     results = redis_conn.get(f"results:{responseId}:final")
@@ -162,6 +165,8 @@ def reply_result():
     else:
         print("NO RESULTS AVAILABLE")
         return jsonify({"status": "processing"}), 202
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
