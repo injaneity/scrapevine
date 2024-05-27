@@ -4,7 +4,6 @@ import requests
 import json
 import re
 import redis
-import time
 from multi import process_url
 from pse import product_search
 import uuid
@@ -108,7 +107,7 @@ def process_data(url, keywords, responseId):
     result = process_url(url, keywords)
     
     if result:
-        redis_conn.hset(f"results:{responseId}", url, result)
+        redis_conn.hset(f"results:{responseId}", url, result) # Store the result using Redis
         print(f"URL PROCESSED ({url}):\n" + str(result))
 
 
@@ -139,9 +138,8 @@ def aggregate_results(results, responseId, keywords):
     header_dict["headers"] = keywords
     output_json.insert(1, header_dict)
 
-    # Store the final result in Redis
-    redis_conn.set(f"results:{responseId}:final", json.dumps(output_json))
-    print("RESULTS AGGREGATED:\n" + str(json.loads(redis_conn.get(f"results:{responseId}:final").decode('utf-8'))))
+    redis_conn.set("my_key", json.dumps(output_json)) # Store aggregated result in Redis
+    print("RESULTS AGGREGATED:\n" + str(json.loads(redis_conn.get("my_key").decode('utf-8'))))
 
 
 
@@ -151,8 +149,6 @@ def task_postrun_handler(task_id, task, state, **kwargs):
     redis_conn.decr('active_tasks')
     active_tasks = int(redis_conn.get('active_tasks'))
     if active_tasks == 0:
-        # Wait to ensure results are properly stored
-        time.sleep(2)
         print("ALL TASKS COMPLETED. SCALING DOWN DYNOS.")
         scale_dynos('worker', 0)
 
@@ -161,12 +157,17 @@ def task_postrun_handler(task_id, task, state, **kwargs):
 # Flask route to reply with results
 @app.route('/reply_result', methods=['GET'])
 def reply_result():
-    responseId = request.args.get('responseId')
-    results = redis_conn.get(f"results:{responseId}:final")
+    # responseId = request.args.get('responseId')
+    # print("THIS IS THE RESPONSEID", responseId)
+    
+    # results = redis_conn.get(responseId)
+    # print("THESE ARE THE RESULTS", json.loads(redis_conn.get(responseId).decode('utf-8')))
+
+    results = redis_conn.get("my_key")
 
     if results:
         print("SENDING RESULTS:\n" + str(results))
-        redis_conn.delete(f"results:{responseId}:final")
+        redis_conn.delete("my_key")
         return json.loads(results.decode('utf-8'))
     else:
         print("NO RESULTS AVAILABLE")
