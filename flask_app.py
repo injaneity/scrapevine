@@ -93,8 +93,6 @@ def aggregate_results(results, responseId, keywords):
     all_results = redis_conn.hgetall(f"results:{responseId}")
     decoded_results = {}
 
-    print("RAW RESULTS:", all_results)  # Log raw data before decoding
-
     for key, value in all_results.items():
         try:
             decoded_results[key.decode('utf-8')] = json.loads(value.decode('utf-8').replace("'", '"'))
