@@ -105,7 +105,7 @@ def aggregate_results(results, responseId, keywords):
     decoded_results = {}
     
     # Log raw data before decoding
-    print("RAW RESULTS:\n", all_results)
+    print("RAW RESULTS:", all_results)
 
     for key, value in all_results.items():
         try:
@@ -140,8 +140,9 @@ def aggregate_results(results, responseId, keywords):
 def task_postrun_handler(task_id, task, state, **kwargs):
     redis_conn.decr('tasks')
     tasks = int(redis_conn.get('tasks'))
-    print(f'{tasks} REMAINING TASKS')
-    if tasks == 0:
+    if tasks > 0:
+        print(f'{tasks} REMAINING TASKS')
+    else:
         print("ALL TASKS COMPLETED.")
         scale_dynos('worker', 0)
 

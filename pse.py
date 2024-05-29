@@ -34,7 +34,7 @@ def product_search(tags, link):
         if response.status_code == 200:
             result = response.json()
         else:
-            print(f"Error {response.status_code}: {response.reason}")
+            print(f"ERROR {response.status_code}: {response.reason}")
             return ""
 
         # Extracting webpage URLs where images are found
