@@ -16,7 +16,7 @@ def fetch_status_code(url):
         return None
 
 def extract_html(url):
-    #print(f"EXTRACTING FROM {url}")
+    # print(f"EXTRACTING FROM {url}")
 
     status_code = fetch_status_code(url)
     if status_code != 200:

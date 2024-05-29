@@ -45,7 +45,7 @@ def keyword_data(html_content, keywords):
             data[keyword].append(element.get_text(strip=True))
             
     data = keyword_unique(data)
-    return data   
+    return data 
 
 # part 2: extract and clean all json objects
 
@@ -62,7 +62,7 @@ def json_filter(obj, retain_keywords, exclude_keywords):
         return [json_filter(item, retain_keywords, exclude_keywords) for item in obj]
     else:
         return obj
-    
+
 def json_unique(lst):
     seen = set()
     unique_dicts = []
@@ -94,44 +94,19 @@ def json_obj_data(html_content, include_terms, exclude_terms):
     unique_data = json_unique(data)  # Remove duplicates from the list
     return unique_data
 
-def is_404_page(soup):
-    title = soup.title.string if soup.title else ""
-    # Check if "404" and common phrases exist in the title or specific sections
-    error_indicators = ["404", "not found", "page not found", "error"]
-    if any(keyword in title.lower() for keyword in error_indicators):
-        return True
-    # Additional body content checks in specific sections
-    body_text = soup.get_text().lower()
-    error_section = soup.find_all(['h1', 'h2', 'h3', 'div', 'p'], text=re.compile('|'.join(error_indicators), re.IGNORECASE))
-    if error_section or any(keyword in body_text for keyword in error_indicators):
-        return True
-    return False
 
 def clean_html(html_content, keywords):
+    
     exclude_terms = ['childCategory', 'itemNamein', 'promotionname', 'assetname']
-
-    soup = BeautifulSoup(html_content, 'html.parser')
-    if is_404_page(soup):
-        print(f"FAILED TO CLEAN HTML, PAGE NOT FOUND")
-        return None
     
     combined_data = {
         "html_elements": keyword_data(html_content, keywords),
         "json_objects": json_obj_data(html_content, keywords, exclude_terms)
     }
 
-    #print("CLEANED HTML:\n" + str(combined_data))
+    if "404" in combined_data["html_elements"]["title"]:
+        print("FAILED TO CLEAN HTML:\n" + str(combined_data))
+        return None
+    
+    # print("CLEANED HTML:\n" + str(combined_data))
     return(combined_data)
-        
-# Example usage
-# '''
-# file_path = './data.txt'
-# with open(file_path, 'r') as file:
-#     html_content = file.read()
-
-# # Assuming the HTML content is loaded into `html_content`
-# keywords = ['name', 'price', 'description']
-# html_clean(html_content, keywords)
-
-# print(f"Cleaned JSON objects have been saved to JSON file")
-# '''
