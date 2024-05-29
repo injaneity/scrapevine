@@ -27,9 +27,9 @@ app.json.sort_keys = False
 # Initialize Celery
 celery = Celery(__name__, backend=os.getenv("REDIS_URL") + '?ssl_cert_reqs=CERT_NONE', broker=os.getenv('CLOUDAMQP_URL'))
 celery.conf.update(
-    worker_concurrency=1,  # Ensure each worker handles one task at a time
-    task_acks_late=True,  # Ensure tasks are acknowledged after completion
-    worker_prefetch_multiplier=1  # Prevent multiple tasks from being assigned to the same worker
+    worker_concurrency=1,
+    task_acks_late=True,
+    worker_prefetch_multiplier=1
 )
 
 # Function to scale dynos
@@ -38,7 +38,7 @@ def scale_dynos(dyno_type, quantity):
     headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/vnd.heroku+json; version=3',
-        'Authorization': f'Bearer {os.getenv('HEROKU_API_KEY')}' 
+        'Authorization': f'Bearer {os.getenv("HEROKU_API_KEY")}' 
     }
     data = {"quantity": quantity}
     response = requests.patch(url, headers=headers, json=data)
@@ -50,19 +50,14 @@ def scale_dynos(dyno_type, quantity):
 # Flask route to start web scraping
 @app.route('/receive_data', methods=['POST'])
 def receive_data():
-    # Scale up dynos before processing
-    scale_dynos('worker', 10)
-    
+    scale_dynos('worker', 10)  # Scale up dynos before processing
+
     data = request.get_json()
     responseId = str(uuid.uuid4())  # Generate unique task ID
-    
     print("DATA RECEIVED:\n" + str(data))
     rawlink, rawtags = data['siteUrl'], data['tags']
 
-    # Transform rawtags string into a list of individual words
-    tags = re.split(r'[^a-zA-Z]+', rawtags)
-    # Filter out any empty strings that may result from splitting
-    tags = list(filter(None, tags))
+    tags = list(filter(None, re.split(r'[^a-zA-Z]+', rawtags)))  # Transform rawtags string into a list of individual words
     print(tags)
     
     # Determine the appropriate keywords based on the link
@@ -76,15 +71,11 @@ def receive_data():
         return jsonify({"error": f"NO MATCHING WEBSITE FOR {rawlink}"}), 400
 
     urls = product_search(tags, link)
-    
-    # Initialize task counter
-    redis_conn.set('tasks', len(urls) + 1)  # +1 for the aggregate_results task
-    tasks = int(redis_conn.get('tasks'))
-    print(f'{tasks} REMAINING TASKS')
+    redis_conn.set('tasks', len(urls) + 1)  # Initialize task counter, +1 for the aggregate_results task
+    print(f'{redis_conn.get("tasks").decode()} REMAINING TASKS')
 
     subtask_signatures = [process_data.s(url, keywords, responseId) for url in urls]
-    callback_signature = aggregate_results.s(responseId=responseId, keywords=keywords)
-    chord(subtask_signatures)(callback_signature)
+    chord(subtask_signatures)(aggregate_results.s(responseId=responseId, keywords=keywords))
     
     return jsonify({"responseId": responseId}), 202
 
@@ -92,10 +83,8 @@ def receive_data():
 @celery.task
 def process_data(url, keywords, responseId):
     result = process_url(url, keywords)
-    
     if result:
-        redis_conn.hset(f"results:{responseId}", url, result) # Store the result using Redis
-        #print(f"URL PROCESSED ({url}):\n" + str(result))
+        redis_conn.hset(f"results:{responseId}", url, result)  # Store the result using Redis
 
 # Celery task to aggregate results
 @celery.task
@@ -103,36 +92,27 @@ def aggregate_results(results, responseId, keywords):
     output_json = []
     all_results = redis_conn.hgetall(f"results:{responseId}")
     decoded_results = {}
-    
-    # Log raw data before decoding
-    # print("RAW RESULTS:", all_results)
+
+    print("RAW RESULTS:", all_results)  # Log raw data before decoding
 
     for key, value in all_results.items():
         try:
-            decoded_key = key.decode('utf-8')
-            decoded_value = json.loads(value.decode('utf-8').replace("'", '"'))
-            decoded_results[decoded_key] = decoded_value
+            decoded_results[key.decode('utf-8')] = json.loads(value.decode('utf-8').replace("'", '"'))
         except json.JSONDecodeError as e:
             print(f"JSON DECODE ERROR FOR KEY: {key}\nVALUE: {value}\nERROR:{e}")
-            continue
 
     for url, result in decoded_results.items():
-        if all(value == '' for value in result.values()):
+        if not any(result.values()):
             print("BAD LINK: " + url)
         else:
             result["URL"] = url
             output_json.append(result)
 
-    analysis_dict = {
-        **analyse_price(output_json),
-        "Trend": analyse_trend(output_json)
-    }
+    analysis_dict = {**analyse_price(output_json), "Trend": analyse_trend(output_json)}
     output_json.insert(0, analysis_dict)
+    output_json.insert(1, {"headers": keywords + ["URL"]})
 
-    header_dict = {"headers": keywords + ["URL"]}
-    output_json.insert(1, header_dict)
-
-    redis_conn.set("my_key", json.dumps(output_json)) # Store aggregated result in Redis
+    redis_conn.set("my_key", json.dumps(output_json))  # Store aggregated result in Redis
     print("RESULTS AGGREGATED:\n" + str(json.loads(redis_conn.get("my_key").decode('utf-8'))))
 
 # Track tasks using Redis
@@ -140,17 +120,14 @@ def aggregate_results(results, responseId, keywords):
 def task_postrun_handler(task_id, task, state, **kwargs):
     redis_conn.decr('tasks')
     tasks = int(redis_conn.get('tasks'))
-    if tasks > 0:
-        print(f'{tasks} REMAINING TASKS')
-    else:
-        print("ALL TASKS COMPLETED.")
+    print(f'{tasks} REMAINING TASKS' if tasks > 0 else "ALL TASKS COMPLETED.")
+    if tasks == 0:
         scale_dynos('worker', 0)
 
 # Flask route to reply with results
 @app.route('/reply_result', methods=['GET'])
 def reply_result():
     results = redis_conn.get("my_key")
-
     if results:
         print("SENDING RESULTS:\n" + str(results))
         redis_conn.delete("my_key")
