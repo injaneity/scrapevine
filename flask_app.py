@@ -105,7 +105,7 @@ def aggregate_results(results, responseId, keywords):
     decoded_results = {}
     
     # Log raw data before decoding
-    print("RAW RESULTS:", all_results)
+    # print("RAW RESULTS:", all_results)
 
     for key, value in all_results.items():
         try:
@@ -113,7 +113,7 @@ def aggregate_results(results, responseId, keywords):
             decoded_value = json.loads(value.decode('utf-8').replace("'", '"'))
             decoded_results[decoded_key] = decoded_value
         except json.JSONDecodeError as e:
-            print(f"JSON DECODE ERROR FOR KEY {key}: {e}")
+            print(f"JSON DECODE ERROR FOR KEY: {key}\nVALUE: {value}\nERROR:{e}")
             continue
 
     for url, result in decoded_results.items():

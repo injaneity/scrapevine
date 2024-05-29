@@ -17,18 +17,19 @@ def analyse_html(data, keywords):
     messages=[
     {"role": "system",
     "content":
-    f"""Your role is to analyse html from webpages containing clothing products, 
+    f"""Your role is to analyse HTML from webpages containing clothing products, 
     and output the necessary characteristics to fill up the following format: {keyword_dict}.
     Each characteristic should be human-readable, and take into account all provided information, not just the corresponding key-value pairs.
     For price, output only the numeric value. If the price is not in Singapore dollars, 
     convert it into Singapore dollars first. If there are multiple prices, output the median price.
+    Descriptions should be summarised as concisely as possible.
     Try your best to fill up all characteristics, and infer if necessary. If completely unable to provide a characteristic, 
     do not output any explanation - leave that characteristic blank and output the entire dictionary as per normal.
-    Keep each characteristic as concise as possible. The final output should be less than 75 tokens in length."""},
+    Ensure that each characteristic and the final output is as concise as possible. The final output should be less than 75 tokens in length."""},
     {"role": "user",
     "content": f"{data}"},
     ],
-    max_tokens = 75,
+    # max_tokens = 75,
     temperature = 0,
     top_p = 0,
     )
@@ -53,7 +54,7 @@ def analyse_trend(data):
     {"role": "user",
     "content": f"{data}"},
     ],
-    max_tokens = 200,
+    # max_tokens = 200,
     temperature = 0,
     top_p = 0,
     )
