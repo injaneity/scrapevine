@@ -12,8 +12,6 @@ from urllib.parse import urlparse
 from celery import Celery, chord
 from celery.signals import task_postrun
 
-
-
 # Load keyword map from JSON file
 with open('map.json', 'r') as f:
     map = json.load(f)
@@ -34,24 +32,20 @@ celery.conf.update(
     worker_prefetch_multiplier=1  # Prevent multiple tasks from being assigned to the same worker
 )
 
-
-
 # Function to scale dynos
 def scale_dynos(dyno_type, quantity):
     url = f"https://api.heroku.com/apps/{os.getenv('HEROKU_APP_NAME')}/formation/{dyno_type}"
     headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/vnd.heroku+json; version=3',
-        'Authorization': f'Bearer {os.getenv('HEROKU_API_KEY')}'
+        'Authorization': f'Bearer {os.getenv('HEROKU_API_KEY')}' 
     }
     data = {"quantity": quantity}
     response = requests.patch(url, headers=headers, json=data)
     if response.status_code == 200:
-        print(f"SCALING {dyno_type} DYNOS TO {quantity}")
+        print(f"SCALING DYNOS TO {quantity}")
     else:
         print(f"FAILED TO SCALE DYNOS: {response.content}")
-
-
 
 # Flask route to start web scraping
 @app.route('/receive_data', methods=['POST'])
@@ -84,15 +78,15 @@ def receive_data():
     urls = product_search(tags, link)
     
     # Initialize task counter
-    redis_conn.set('active_tasks', len(urls) + 1)  # +1 for the aggregate_results task
+    redis_conn.set('tasks', len(urls) + 1)  # +1 for the aggregate_results task
+    tasks = int(redis_conn.get('tasks'))
+    print(f'{tasks} REMAINING TASKS')
 
     subtask_signatures = [process_data.s(url, keywords, responseId) for url in urls]
     callback_signature = aggregate_results.s(responseId=responseId, keywords=keywords)
     chord(subtask_signatures)(callback_signature)
     
     return jsonify({"responseId": responseId}), 202
-
-
 
 # Celery task to process URL
 @celery.task
@@ -101,16 +95,26 @@ def process_data(url, keywords, responseId):
     
     if result:
         redis_conn.hset(f"results:{responseId}", url, result) # Store the result using Redis
-        print(f"URL PROCESSED ({url}):\n" + str(result))
-
-
+        #print(f"URL PROCESSED ({url}):\n" + str(result))
 
 # Celery task to aggregate results
 @celery.task
 def aggregate_results(results, responseId, keywords):
     output_json = []
     all_results = redis_conn.hgetall(f"results:{responseId}")
-    decoded_results = {key.decode('utf-8'): json.loads(value.decode('utf-8').replace("'", '"')) for key, value in all_results.items()}
+    decoded_results = {}
+    
+    # Log raw data before decoding
+    print("RAW RESULTS:\n", all_results)
+
+    for key, value in all_results.items():
+        try:
+            decoded_key = key.decode('utf-8')
+            decoded_value = json.loads(value.decode('utf-8').replace("'", '"'))
+            decoded_results[decoded_key] = decoded_value
+        except json.JSONDecodeError as e:
+            print(f"JSON DECODE ERROR FOR KEY {key}: {e}")
+            continue
 
     for url, result in decoded_results.items():
         if all(value == '' for value in result.values()):
@@ -119,43 +123,31 @@ def aggregate_results(results, responseId, keywords):
             result["URL"] = url
             output_json.append(result)
 
-    analysis_dict = {}
-    price_dict = analyse_price(output_json)
-    for price in price_dict:
-        analysis_dict[price] = price_dict[price]
-    analysis_dict["Trend"] = analyse_trend(output_json)
+    analysis_dict = {
+        **analyse_price(output_json),
+        "Trend": analyse_trend(output_json)
+    }
     output_json.insert(0, analysis_dict)
 
-    header_dict = {}
-    keywords.append("URL")
-    header_dict["headers"] = keywords
+    header_dict = {"headers": keywords + ["URL"]}
     output_json.insert(1, header_dict)
 
     redis_conn.set("my_key", json.dumps(output_json)) # Store aggregated result in Redis
     print("RESULTS AGGREGATED:\n" + str(json.loads(redis_conn.get("my_key").decode('utf-8'))))
 
-
-  
-# Track active tasks using Redis
+# Track tasks using Redis
 @task_postrun.connect
 def task_postrun_handler(task_id, task, state, **kwargs):
-    redis_conn.decr('active_tasks')
-    active_tasks = int(redis_conn.get('active_tasks'))
-    if active_tasks == 0:
+    redis_conn.decr('tasks')
+    tasks = int(redis_conn.get('tasks'))
+    print(f'{tasks} REMAINING TASKS')
+    if tasks == 0:
         print("ALL TASKS COMPLETED.")
         scale_dynos('worker', 0)
-
-
 
 # Flask route to reply with results
 @app.route('/reply_result', methods=['GET'])
 def reply_result():
-    # responseId = request.args.get('responseId')
-    # print("THIS IS THE RESPONSEID", responseId)
-    
-    # results = redis_conn.get(responseId)
-    # print("THESE ARE THE RESULTS", json.loads(redis_conn.get(responseId).decode('utf-8')))
-
     results = redis_conn.get("my_key")
 
     if results:
@@ -165,8 +157,6 @@ def reply_result():
     else:
         print("NO RESULTS AVAILABLE")
         return jsonify({"status": "processing"}), 202
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
