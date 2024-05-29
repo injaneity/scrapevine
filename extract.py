@@ -1,3 +1,4 @@
+import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -6,8 +7,21 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
+def fetch_status_code(url):
+    try:
+        response = requests.get(url)
+        return response.status_code
+    except requests.RequestException as e:
+        print(f"ERROR FETCHING {url}: {e}")
+        return None
+
 def extract_html(url):
     #print(f"EXTRACTING FROM {url}")
+
+    status_code = fetch_status_code(url)
+    if status_code != 200:
+        print(f"FAILED TO EXTRACT HTML FROM {url}, HTTP STATUS CODE {status_code}")
+        return None
 
     try:
         # Setting up Chrome WebDriver with options
@@ -30,9 +44,8 @@ def extract_html(url):
         html_content = driver.page_source
 
         driver.quit()
-    
     except:
-        print(f"FAILED TO EXTRACT HTML FROM {url}")
+        print(f"FAILED TO EXTRACT HTML FROM {url}, WEBDRIVER ERROR")
         return None
     
     return html_content
